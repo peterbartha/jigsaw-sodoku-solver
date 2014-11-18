@@ -16,13 +16,13 @@ namespace ConsoleApp.Structure
 
         public Cell() { }
 
-        public Cell(int x, int y, int value, Box box)
+        public Cell(int x, int y, int value, Box box, List<int> candidate)
         {
             X = x;
             Y = y;
             Value = value;
             Box = box;
-            candidates = new List<int>();
+            candidates = candidate;
         }
 
 
