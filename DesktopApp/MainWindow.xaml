@@ -29,7 +29,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Open" HorizontalAlignment="Left" Margin="45,-30,-61,0" VerticalAlignment="Top" Width="76" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click" Foreground="#FFFCFFF5" Height="18" Grid.Column="8"/>
+            <Button Content="Open" HorizontalAlignment="Left" Margin="43,-31,0,0" VerticalAlignment="Top" Width="76" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click" Foreground="#FFFCFFF5" Height="18" Grid.Column="6" Grid.ColumnSpan="2"/>
         </Grid>
     </Canvas>
 </Window>
