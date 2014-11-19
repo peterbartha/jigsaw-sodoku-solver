@@ -1,7 +1,8 @@
 ﻿<Window x:Class="DesktopApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="640" Width="570" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="#FF3E606F">
+        xmlns:local="clr-namespace:DesktopApp"
+        Title="MainWindow" Height="811" Width="570" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="#FF3E606F">
     <Canvas Height="625" Margin="15,15,15,0" VerticalAlignment="Top">
         <Canvas Height="50" Width="540">
             <Label Content="Jigsaw Sodoku Solver" Canvas.Top="5" FontSize="22" Background="Transparent" Foreground="#FFFCFFF5"/>
@@ -31,5 +32,7 @@
             </Grid.ColumnDefinitions>
             <Button Content="Open" HorizontalAlignment="Left" Margin="43,-31,0,0" VerticalAlignment="Top" Width="76" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click" Foreground="#FFFCFFF5" Height="18" Grid.Column="6" Grid.ColumnSpan="2"/>
         </Grid>
+        <local:CellPanel Canvas.Left="13" Canvas.Top="664">
+        </local:CellPanel>
     </Canvas>
 </Window>
