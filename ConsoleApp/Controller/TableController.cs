@@ -11,6 +11,7 @@ namespace ConsoleApp.Controller
     {
         Table table;
         int[,] output;
+        List<Box> boxes;
 
         public TableController()
         {
@@ -21,25 +22,195 @@ namespace ConsoleApp.Controller
         {
             output = new int[27, 27];
             table = new Table();
+            boxes = new List<Box>();
+
+           // for (int i = 0; i < 9; i++) boxes.Add(new Box());          
 
             for (int y = 0; y < 9; y++)
             {
                 List<Cell> row = new List<Cell>();
-                Box tempbox = new Box();
-
+                Box tempBox = new Box();
                 for (int x = 0; x < 9; x++)
                 {
                     List<int> candidate = new List<int>();
-                    Cell cell = new Cell(x, y, (int)((x + 1) * (y + 1)) % 9, tempbox);
+                    Cell cell = new Cell(x, y, (int)((x + 1) * (y + 1)) % 9);
 
                     for (int i = 1; i < 10; i++)   candidate.Add(i);
 
                     cell.Candidates = candidate;
                     row.Add(cell);
+
+                    int boxIndex = (y / 3) + (x / 3) * 3;                        
+                    tempBox.Cells.Add(cell);
                 }
+
+                foreach (var cell in row)
+                {
+                    cell.Box = tempBox;
+                }
+
                 table.Cells.Add(row);
             }
             CreateOutput();
+            Iteraction();
+            CreateOutput();
+        }
+
+        public void Iteraction()
+        {
+            List<Cell> refreshNeeded = new List<Cell>();
+            //Simulate BasicStep
+            table.Cells[3][4].Value = 8;
+            refreshNeeded.Add(table.Cells[3][4]);
+             
+            Heuristic_BasicStep(refreshNeeded);
+            Heuristic_NakedSingle();
+            Heuristic_HiddenSingle();
+            Heuristic_NakedPair();
+            refreshNeeded.Clear();
+        }
+
+        public void Heuristic_Inner_BasicStep(List<Cell> cells, Cell source)
+        {
+            foreach (var cell in cells)
+            {
+                //TODO: mi van ha benne sincs?
+                cell.Candidates.Remove(source.Value);
+            }
+        }
+
+        public void Heuristic_BasicStep(List<Cell> doRefresh)
+        {
+            foreach (var cell in doRefresh)
+            {
+                Heuristic_Inner_BasicStep(GetColumnByIndex(cell.Y).ToList(), cell);
+                Heuristic_Inner_BasicStep(GetRowByIndex(cell.X).ToList(), cell);
+                Heuristic_Inner_BasicStep(cell.Box.Cells, cell);
+            }
+        }
+
+        public void Heuristic_NakedSingle()
+        {
+            foreach (var column in table.Cells)
+            {
+                foreach (var cell in column)
+                {
+                    if (cell.Candidates.Count == 1)
+                    {
+                        cell.Value = cell.Candidates[0];
+                        cell.Candidates.Clear();
+                    }
+                }
+            }
+        }
+
+        public void Heuristic_Inner_HiddenSingle(List<Cell> cells)
+        {
+            List<Cell> onlyOne_Cell = new List<Cell>();
+            for (int i = 0; i < 9; i++) onlyOne_Cell.Add(new Cell());
+            List<int> onlyOne_Int = new List<int>();
+            List<int> occurred = new List<int>();
+
+            foreach (var cell in cells)
+            {
+                foreach (var cand in cell.Candidates)
+                {
+                    if (!occurred.Contains(cand))
+                    {
+                        onlyOne_Cell[cand - 1] = cell;
+                        occurred.Add(cand);
+                        onlyOne_Int.Add(cand);
+                    }
+                    else
+                    {
+                        //TODO: mi van ha benne sincs?
+                        onlyOne_Int.Remove(cand);
+                    }
+                }
+            }
+
+            foreach (var cand in onlyOne_Int)
+            {
+                Cell fresh = onlyOne_Cell[cand - 1];
+                table.Cells[fresh.Y][fresh.X].Candidates.Clear();
+                table.Cells[fresh.Y][fresh.X].Candidates.Add(cand);
+            }
+        }
+
+        public void Heuristic_HiddenSingle()
+        {
+            for (int num = 0; num < 9; num++)
+            {
+                Heuristic_Inner_HiddenSingle(GetColumnByIndex(num).ToList());
+                Heuristic_Inner_HiddenSingle(GetRowByIndex(num).ToList());
+            }
+
+            foreach (var box in boxes)
+            {
+                Heuristic_Inner_HiddenSingle(box.Cells);
+            }
+        }
+
+        public void Heuristic_Inner_NakedPair(List<Cell> cells)
+        {
+            int[,] pairs = new int[5, 2];
+            List<int> goodNums = new List<int>();
+            bool inPairs = false;
+
+            foreach (var cell in cells)
+            {
+                if (cell.Candidates.Count == 2)
+                {
+                    for (int i = 0; i < pairs.Length; i++)
+                    {
+                        if ((pairs[i, 0] == cell.Candidates.First()) && (pairs[i, 1] == cell.Candidates.Last()))
+                        {
+                            goodNums.Add(cell.Candidates.First());
+                            goodNums.Add(cell.Candidates.Last());
+                            inPairs = true;
+                        }
+                    }
+                    if (!inPairs)
+                    {
+                        int length = pairs.Length;
+                        pairs[length, 0] = cell.Candidates.First();
+                        pairs[length, 1] = cell.Candidates.Last();
+                    }
+                }
+            }
+
+            if (goodNums.Count > 0)
+            {
+                foreach (var cell in cells)
+                {
+                    if (cell.Candidates.Count != 2)
+                    {
+                        foreach (var good in goodNums)
+                        {
+                            foreach (var cand in cell.Candidates)
+                            {
+                                if (cand == good)
+                                {
+                                    cell.Candidates.Remove(cand);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void Heuristic_NakedPair()
+        {
+            for (int num = 0; num < 9; num++)
+            {
+                Heuristic_Inner_NakedPair(GetColumnByIndex(num).ToList());
+                Heuristic_Inner_NakedPair(GetRowByIndex(num).ToList());
+            }
+            foreach (var box in boxes)
+            {
+                Heuristic_Inner_NakedPair(box.Cells);
+            }
         }
 
         public bool CheckTable()
