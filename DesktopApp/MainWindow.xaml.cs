@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopApp.Controller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +21,15 @@ namespace DesktopApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        TableController tableCtrl;
+        MapController mapCtrl;
+
         public MainWindow()
         {
             InitializeComponent();
+            tableCtrl = new TableController(this);
+            mapCtrl = new MapController(tableCtrl);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

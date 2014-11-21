@@ -1,59 +1,90 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace DesktopApp.Controller
 {
     class TableController
     {
+        MainWindow window;
         Table table;
         int[,] output;
         List<Box> boxes;
+        List<List<CellPanel>> cellPanels;
 
-        public TableController()
+        public TableController(MainWindow mainWindow)
         {
+            window = mainWindow;
             InitializeTable();
         }
 
         private void InitializeTable()
         {
+            cellPanels = new List<List<CellPanel>>();
             output = new int[27, 27];
             table = new Table();
             boxes = new List<Box>();
+        }
 
-           // for (int i = 0; i < 9; i++) boxes.Add(new Box());          
+        public void RenderTable()
+        {
+            MakeCandidatesForTableCells();
+            CreateCellPanels();
+            RenderCellPanels();
+            //CreateOutput();
+            //Iteraction();
+            //CreateOutput();
+        }
 
-            for (int y = 0; y < 9; y++)
+        public void CreateCellPanels()
+        {
+            foreach (var row in table.Cells)
             {
-                List<Cell> row = new List<Cell>();
-                Box tempBox = new Box();
-                for (int x = 0; x < 9; x++)
-                {
-                    List<int> candidate = new List<int>();
-                    Cell cell = new Cell(x, y, (int)((x + 1) * (y + 1)) % 9);
-
-                    for (int i = 1; i < 10; i++)   candidate.Add(i);
-
-                    cell.Candidates = candidate;
-                    row.Add(cell);
-
-                    int boxIndex = (y / 3) + (x / 3) * 3;                        
-                    tempBox.Cells.Add(cell);
-                }
-
+                List<CellPanel> cellPanelRow = new List<CellPanel>();
                 foreach (var cell in row)
                 {
-                    cell.Box = tempBox;
+                    CellPanel cellPanel = new CellPanel(cell, this);
+                    cellPanelRow.Add(cellPanel);
                 }
-
-                table.Cells.Add(row);
+                cellPanels.Add(cellPanelRow);
             }
-            CreateOutput();
-            Iteraction();
-            CreateOutput();
+        }
+
+        public void RenderCellPanels()
+        {
+            ClearTable();
+            for (int y = 0; y < 9; y++)
+            {
+                for (int x = 0; x < 9; x++)
+                {
+                    CellPanel cellPanel = cellPanels.ElementAt(y).ElementAt(x);
+                    Grid.SetColumn(cellPanel, x);
+                    Grid.SetRow(cellPanel, y);
+                    window.CellGrid.Children.Add(cellPanel);
+                }
+            }
+        }
+
+        public void RefreshCellPanels()
+        {
+            foreach (var cellPanelRow in cellPanels)
+            {
+                foreach (var cellPanel in cellPanelRow)
+                {
+                    cellPanel.Refresh();
+                }
+            }
+        }
+
+        private void ClearTable()
+        {
+            if (window.CellGrid.Children.Count > 0)
+                window.CellGrid.Children.Clear();
         }
 
         public void Iteraction()
@@ -229,6 +260,7 @@ namespace DesktopApp.Controller
 
         public bool CheckCellValidity(Cell cell)
         {
+            if (cell.Value == 0) return true;
             int count = 0;
 
             // Row
@@ -259,20 +291,23 @@ namespace DesktopApp.Controller
 
         public void MakeCandidatesForCell(Cell cell)
         {
-            for (int value = 1; value <= 9; value++)
+            if (cell.Value == 0)
             {
-                cell.Value = value; // testing
-                if (CheckCellValidity(cell)) cell.Candidates.Add(value);
-            }
+                for (int value = 1; value <= 9; value++)
+                {
+                    cell.Value = value; // testing
+                    if (CheckCellValidity(cell)) cell.Candidates.Add(value);
+                }
 
-            if (cell.Candidates.Count() == 1)
-            {
-                cell.Value = cell.Candidates[0];
-                cell.Candidates.Sort();
-            }
-            else
-            {
-                cell.Value = 0;
+                if (cell.Candidates.Count() == 1)
+                {
+                    cell.Value = cell.Candidates[0];
+                    cell.Candidates.Sort();
+                }
+                else
+                {
+                    cell.Value = 0;
+                }
             }
         }
 
@@ -359,6 +394,16 @@ namespace DesktopApp.Controller
         private IEnumerable<Cell> GetRowByIndex(int row)
         {
             return table.Cells.ElementAt(row);
+        }
+
+
+        /**
+         * Getter/Setter
+         */
+        public Table Table
+        {
+            get { return table; }
+            set { table = value; }
         }
     }
 }

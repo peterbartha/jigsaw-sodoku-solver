@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controller\MainController.cs" />
+    <Compile Include="Controller\MapController.cs" />
     <Compile Include="Controller\TableController.cs" />
     <Compile Include="Structure\Box.cs" />
     <Compile Include="Structure\Cell.cs" />

@@ -1,4 +1,5 @@
-﻿using DesktopApp.Structure;
+﻿using DesktopApp.Controller;
+using DesktopApp.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,20 +7,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
-namespace DesktopApp
+namespace DesktopApp.View
 {
     class CellPanel : Panel
     {
-        private Canvas candidateCanavas, resultCanavas;
+        private TableController tableController;
+        private Canvas candidateCanvas, resultCanvas, editCanvas;
+        private TextBox field;
+        private TextBlock number;
+        private List<TextBlock> candidates;
         private Cell cell;
 
-        public CellPanel(Cell c)
+        public CellPanel(Cell c, TableController tableCtrl)
         {
+            tableController = tableCtrl;
             cell = c;
             InitializeCellPanel();
             BuildCandidateView();   // This is the default view
+            BuildResultView();
+            BuildEditView();
+            Refresh();
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(LeftClickOnPanel);
         }
 
         private void InitializeCellPanel() {
@@ -30,10 +41,18 @@ namespace DesktopApp
 
         private void BuildCandidateView()
         {
-            candidateCanavas = new Canvas();
-            candidateCanavas.Width = 60;
-            candidateCanavas.Height = 60;
-            candidateCanavas.Background = Brushes.White;
+            Border frame = new Border();
+            frame.Width = frame.Height = 60;
+            BrushConverter bc = new BrushConverter();
+            frame.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
+            frame.BorderThickness = new Thickness(1, 1, 1, 1);
+
+            candidateCanvas = new Canvas();
+            candidateCanvas.Width = candidateCanvas.Height = 60;
+            candidateCanvas.Margin = new Thickness(0);
+
+            candidates = new List<TextBlock>();
+
             for (int i = 0; i < 9; i++)
             {
                 Border border = new Border();
@@ -47,73 +66,184 @@ namespace DesktopApp
                 else margin.Top = 3 + Math.Floor(i / 3.0) * 18;
                 border.Margin = margin;
 
-                TextBlock number = new TextBlock();
-                number.Text = Convert.ToString(i + 1);
-                number.Foreground = Brushes.Black;
-                number.FontFamily = new FontFamily("Freestyle Script Regular");
-                number.FontSize = 20;
-                number.HorizontalAlignment = HorizontalAlignment.Center;
-                number.VerticalAlignment = VerticalAlignment.Center;
-                number.Padding = new Thickness(0);
+                TextBlock candidate = new TextBlock();
+                candidate.Text = Convert.ToString(i + 1);
+                BrushConverter bc2 = new BrushConverter();
+                candidate.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
+                candidate.FontFamily = new FontFamily("Freestyle Script Regular");
+                candidate.FontSize = 20;
+                candidate.HorizontalAlignment = HorizontalAlignment.Center;
+                candidate.VerticalAlignment = VerticalAlignment.Center;
+                candidate.Padding = new Thickness(0);
+                candidate.Visibility = Visibility.Hidden;
 
-                border.Child = number;
-                candidateCanavas.Children.Add(border);
+                border.Child = candidate;
+                candidates.Add(candidate);
+                candidateCanvas.Children.Add(border);
             }
-            this.Children.Add(candidateCanavas);
+
+            candidateCanvas.Children.Add(frame);
+            candidateCanvas.Visibility = Visibility.Hidden;
+            this.Children.Add(candidateCanvas);
         }
 
         private void BuildResultView()
         {
-            resultCanavas = new Canvas();
-            resultCanavas.Width = 60;
-            resultCanavas.Height = 60;
-            resultCanavas.Background = Brushes.White;
+            resultCanvas = new Canvas();
+            resultCanvas.Width = resultCanvas.Height = 60;
+            resultCanvas.Margin = new Thickness(-60, 0, 0, 0);
 
             Border border = new Border();
             border.Width = border.Height = 60;
-            border.BorderBrush = null;
+            BrushConverter bc = new BrushConverter();
+            border.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
+            border.BorderThickness = new Thickness(1, 1, 1, 1);
 
-            TextBlock number = new TextBlock();
-            number.Text = Convert.ToString(0);
-            number.Foreground = Brushes.Black;
+            number = new TextBlock();
+            number.Text = Convert.ToString(cell.Value);
+            BrushConverter bc2 = new BrushConverter();
+            number.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
             number.FontFamily = new FontFamily("Freestyle Script Regular");
-            number.FontSize = 30;
+            number.FontSize = 38;
             number.HorizontalAlignment = HorizontalAlignment.Center;
             number.VerticalAlignment = VerticalAlignment.Center;
             number.Padding = new Thickness(0);
             
             border.Child = number;
-            resultCanavas.Children.Add(border);
-            this.Children.Add(resultCanavas);
+            resultCanvas.Children.Add(border);
+            resultCanvas.Visibility = Visibility.Hidden;
+            this.Children.Add(resultCanvas);
+        }
+
+        private void BuildEditView()
+        {
+            editCanvas = new Canvas();
+            editCanvas.Width = resultCanvas.Height = 60;
+            editCanvas.Margin = new Thickness(-60, 0, 0, 0);
+
+            Border border = new Border();
+            border.Width = border.Height = 60;
+            BrushConverter bc = new BrushConverter();
+            border.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
+            border.BorderThickness = new Thickness(1, 1, 1, 1);
+
+            field = new TextBox();
+            field.KeyDown += new KeyEventHandler(OnKeyDown);
+            field.LostFocus += new RoutedEventHandler(FieldLostFocus);
+            field.Text = cell.Value > 0 ? Convert.ToString(cell.Value) : "";
+            field.Background = field.BorderBrush = null;
+            field.BorderThickness = new Thickness(0);
+            BrushConverter bc2 = new BrushConverter();
+            field.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
+            field.FontFamily = new FontFamily("Freestyle Script Regular");
+            field.FontSize = 38;
+            field.HorizontalAlignment = HorizontalAlignment.Center;
+            field.VerticalAlignment = VerticalAlignment.Center;
+            field.Padding = new Thickness(0);
+
+            border.Child = field;
+            editCanvas.Children.Add(border);
+            editCanvas.Visibility = Visibility.Hidden;
+            this.Children.Add(editCanvas);
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Space)
+            {
+                FieldChanged();
+            }
+        }
+
+        private void LeftClickOnPanel(object sender, MouseButtonEventArgs e)
+        {
+            candidateCanvas.Visibility = Visibility.Hidden;
+            resultCanvas.Visibility = Visibility.Hidden;
+            editCanvas.Visibility = Visibility.Visible;
+            field.Focus();
+            field.SelectAll();
+        }
+
+        private void FieldLostFocus(object sender, RoutedEventArgs e)
+        {
+            FieldChanged();
+        }
+
+        private void FieldChanged()
+        {
+            int value;
+            if (int.TryParse(field.Text, out value))
+            {
+                EditCellValue(value);
+                editCanvas.Visibility = Visibility.Hidden;
+                Refresh();
+            }
+            else
+            {
+                field.Text = Convert.ToString(cell.Value);
+                editCanvas.Visibility = Visibility.Hidden;
+                Refresh();
+            }
+        }
+
+        private void EditCellValue(int value)
+        {
+            if (value > 0 && value < 10)
+            {
+                cell.Value = value;
+                number.Text = Convert.ToString(cell.Value);
+                tableController.MakeCandidatesForTableCells();
+            }
+        }
+
+        private void CheckCandidates()
+        {
+            HideAllCandidates();
+            foreach (var candidate in cell.Candidates)
+            {
+                candidates[candidate - 1].Visibility = Visibility.Visible;
+            }
+        }
+
+        private void HideAllCandidates()
+        {
+            foreach (var candidate in candidates)
+            {
+                candidate.Visibility = Visibility.Hidden;
+            }
         }
 
         public void SetCellBackgroundColor(Brush brush)
         {
-            candidateCanavas.Background = resultCanavas.Background = brush;
+            candidateCanvas.Background = resultCanvas.Background = brush;
         }
 
         private void SwitchViewToCandidates()
         {
-            if (candidateCanavas.Visibility == Visibility.Hidden)
+            if (candidateCanvas.Visibility == Visibility.Hidden)
             {
-                candidateCanavas.Visibility = Visibility.Visible;
-                resultCanavas.Visibility = Visibility.Hidden;
+                candidateCanvas.Visibility = Visibility.Visible;
+                resultCanvas.Visibility = Visibility.Hidden;
             }
         }
 
         private void SwitchViewToResult()
         {
-            if (resultCanavas.Visibility == Visibility.Hidden)
+            if (resultCanvas.Visibility == Visibility.Hidden)
             {
-                resultCanavas.Visibility = Visibility.Visible;
-                candidateCanavas.Visibility = Visibility.Hidden;
+                resultCanvas.Visibility = Visibility.Visible;
+                candidateCanvas.Visibility = Visibility.Hidden;
             }
         }
 
         public void Refresh()
         {
             if (cell.Value > 0) SwitchViewToResult();
-            else SwitchViewToCandidates();
+            else
+            {
+                SwitchViewToCandidates();
+                CheckCandidates();
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
