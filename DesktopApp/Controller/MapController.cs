@@ -69,7 +69,7 @@ namespace DesktopApp.Controller
         public void GenerateMap()
         {
             String map = "080000090009301000000000000590000037000609000230000061000000000600907208000000040";
-            String box = "122223444112223344111223444151133374555663377555669997558669997888869977888869977";
+            String box = "122223444112223344111223444151133374555663377555669997558669997888866977888869977";
             tableController.Table.Cells = ParseMap(map, box);
             tableController.Table.Boxes = ParseBox(box);
             tableController.RenderTable();

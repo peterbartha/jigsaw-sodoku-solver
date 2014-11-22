@@ -20,6 +20,7 @@ namespace DesktopApp.View
         private TextBlock number;
         private List<TextBlock> candidates;
         private Cell cell;
+        public readonly IList<string> backgrounds = new List<string> { "#b3d7e9", "#f4dda7", "#e4bdd4", "#b3e6dd", "#f5c0a6", "#b4e6cd", "#e9adad", "#c8c8c8", "#e3efb9" }.AsReadOnly();
 
         public CellPanel(Cell c, TableController tableCtrl)
         {
@@ -36,7 +37,8 @@ namespace DesktopApp.View
         private void InitializeCellPanel() {
             this.Height = 60;
             this.Width = 60;
-            this.Background = Brushes.White;
+            BrushConverter bc = new BrushConverter();
+            this.Background = (Brush)bc.ConvertFrom(backgrounds[tableController.Table.Boxes.IndexOf(cell.Box)]);
         }
 
         private void BuildCandidateView()
@@ -194,6 +196,12 @@ namespace DesktopApp.View
                 number.Text = Convert.ToString(cell.Value);
                 tableController.MakeCandidatesForTableCells();
             }
+        }
+
+        public void ChangeCellValue(int value)
+        {
+            EditCellValue(value);
+            Refresh();
         }
 
         private void CheckCandidates()
