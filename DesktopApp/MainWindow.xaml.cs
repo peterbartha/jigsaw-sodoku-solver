@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,31 @@ namespace DesktopApp
             InitializeComponent();
             tableCtrl = new TableController(this);
             mapCtrl = new MapController(tableCtrl);
+
+            logoPanel.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
+            logoImg.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
+            titleBar.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
+
+            exitIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Exit);
+            minimalIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Minimal);
+        }
+
+
+        private void Window_Exit(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        private void Window_Minimal(object sender, MouseButtonEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        /**
+         * Move window
+         */
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
 
     }

@@ -51,6 +51,7 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\jgsaw-solver.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -143,13 +144,20 @@
     <None Include="Resources\jgsaw-solver.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HeadImage.bmp" />
+    <Content Include="Resources\header_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\minimal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\quit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\head.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\logo-head.png" />
+    <Content Include="Resources\user_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

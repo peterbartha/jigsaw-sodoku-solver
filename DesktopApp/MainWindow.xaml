@@ -35,15 +35,52 @@
             <Canvas.Effect>
                 <DropShadowEffect BlurRadius="2" Color="#FF48879E" Direction="0" Opacity="0.5" ShadowDepth="1"/>
             </Canvas.Effect>
-            <Canvas Height="40" Width="657" Background="#FF8DA1A2" Canvas.Left="301">
-                <Image Height="20" Canvas.Left="10" Canvas.Top="10" Width="20"/>
-                <Label Content="Peter Bartha" Canvas.Left="34" Canvas.Top="5" Width="115" FontSize="16" Foreground="#FF253D47"/>
+            <Canvas x:Name="titleBar" Height="40" Width="657" Background="#FF8DA1A2" Canvas.Left="301">
+                <Image Height="20" Canvas.Left="10" Canvas.Top="11" Width="20" Source="pack://application:,,,/Resources/user_icon.png"/>
+                <Label Content="Peter Bartha" Canvas.Left="31" Canvas.Top="5" Width="115" FontSize="16" Foreground="#FF253D47"/>
+                <Image x:Name="exitIcon" Height="12" Canvas.Left="632" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/quit.png" Cursor="Hand"/>
+                <Image x:Name="minimalIcon" Height="12" Canvas.Left="611" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/minimal.png" Cursor="Hand"/>
             </Canvas>
             <Canvas x:Name="logoPanel" Height="80" Width="300" Background="#FF253D47">
-                <Image x:Name="logoImg" Height="50" Canvas.Left="15" Canvas.Top="15" Width="50" Source="pack://siteoforigin:,,,/Resources/logo-head.png"/>
+                <Image x:Name="logoImg" Height="50" Canvas.Left="15" Canvas.Top="15" Width="50" Source="pack://application:,,,/Resources/header_logo.png"/>
                 <Label Content="Jigsaw Sudoku" Canvas.Left="78" Canvas.Top="32" Width="135" Foreground="#FFE3EFB9" FontSize="18" FontFamily="Segoe UI Semibold"/>
                 <Label Content="Solver" Canvas.Left="202" Canvas.Top="32" Width="131" Foreground="#FFB3D7E9" FontSize="18" FontFamily="Segoe UI Light"/>
             </Canvas>
+            <CheckBox Content="Basic step" Canvas.Left="45" Canvas.Top="281" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
+            <CheckBox Content="Naked Single" Canvas.Left="45" Canvas.Top="311" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
+            <CheckBox Content="Naked pair" Canvas.Left="45" Canvas.Top="341" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <CheckBox Content="Hidden pair" Canvas.Left="45" Canvas.Top="371" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <CheckBox Content="Pointing pair" Canvas.Left="45" Canvas.Top="401" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <CheckBox Content="Box line reduction" Canvas.Left="45" Canvas.Top="431" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <CheckBox Content="X-Wing" Canvas.Left="45" Canvas.Top="461" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <Label Content="Game strategies" Canvas.Left="25" Canvas.Top="237" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <CheckBox Content="Show candidates" Canvas.Left="45" Canvas.Top="561" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <Label Content="Other options" Canvas.Left="25" Canvas.Top="517" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <CheckBox Content="Stopwatch" Canvas.Left="45" Canvas.Top="591" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <CheckBox Content="Stopwatch" Canvas.Left="45" Canvas.Top="621" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <Button Content="Take a step" Canvas.Left="25" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold"/>
+            <Button Content="Auto solve" Canvas.Left="25" Canvas.Top="166" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14"/>
+            <Button Content="Back one step" Canvas.Left="166" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14"/>
         </Canvas>
+        <Label Content="1" Canvas.Left="379" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="2" Canvas.Left="439" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="3" Canvas.Left="499" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="4" Canvas.Left="559" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="5" Canvas.Left="619" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="6" Canvas.Left="679" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="7" Canvas.Left="739" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Canvas.Left="799" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="8" Canvas.Left="799" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="9" Canvas.Left="859" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="A" Canvas.Left="327" Canvas.Top="114" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="B" Canvas.Left="327" Canvas.Top="174" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="C" Canvas.Left="327" Canvas.Top="234" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="D" Canvas.Left="327" Canvas.Top="294" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="E" Canvas.Left="327" Canvas.Top="354" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="F" Canvas.Left="327" Canvas.Top="414" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="G" Canvas.Left="327" Canvas.Top="474" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="H" Canvas.Left="327" Canvas.Top="534" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="I" Canvas.Left="327" Canvas.Top="594" FontSize="16" Foreground="#FF253D47"/>
+        <Label Content="Steps: 0" Canvas.Left="359" Canvas.Top="648" Foreground="#FF626F70"/>
     </Canvas>
 </Window>

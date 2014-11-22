@@ -180,6 +180,12 @@ namespace DesktopApp.View
                 editCanvas.Visibility = Visibility.Hidden;
                 Refresh();
             }
+            else if (field.Text == "")
+            {
+                EditCellValue(0);
+                editCanvas.Visibility = Visibility.Hidden;
+                Refresh();
+            }
             else
             {
                 field.Text = Convert.ToString(cell.Value);
@@ -190,7 +196,7 @@ namespace DesktopApp.View
 
         private void EditCellValue(int value)
         {
-            if (value > 0 && value < 10)
+            if (value >= 0 && value <= 9)
             {
                 cell.Value = value;
                 number.Text = Convert.ToString(cell.Value);
@@ -250,8 +256,8 @@ namespace DesktopApp.View
             else
             {
                 SwitchViewToCandidates();
+                CheckCandidates();
             }
-            CheckCandidates();
         }
 
         protected override Size MeasureOverride(Size availableSize)
