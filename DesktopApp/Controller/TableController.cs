@@ -33,10 +33,10 @@ namespace DesktopApp.Controller
 
         public void RenderTable()
         {
-            MakeCandidatesForTableCells();
-            Iteraction();
             CreateCellPanels();
             RenderCellPanels();
+            MakeCandidatesForTableCells();
+            Iteraction();
         }
 
         public void CreateCellPanels()
@@ -89,17 +89,17 @@ namespace DesktopApp.Controller
         {
             for (int i = 0; i < 1; i++)
             {
-                //Heuristic_NakedSingle();
-                /* Heuristic_HiddenSingle();
+                Heuristic_HiddenSingle();
+                Heuristic_NakedSingle();
+                /*Heuristic_HiddenSingle();
                  Heuristic_NakedPair();
                  Heuristic_HiddenPair();
                  Heuristic_PointingPair();
                  Heuristic_BoxLineReduction();
                  Heuristic_XWing();
                  refreshNeeded.Clear();*/
-                Heuristic_BasicStep();
-            } 
-
+                RefreshCellPanels();
+            }
         }
 
         public void Heuristic_Inner_BasicStep(List<Cell> cells, int cand)
@@ -111,19 +111,20 @@ namespace DesktopApp.Controller
                     cell.Candidates.Sort();
                 }
         }
-
-        public void Heuristic_BasicStep()
+        
+        /**
+         * Erase the new cell value from the same Column, Row and Box
+         */
+        public void Heuristic_BasicStep(Cell cell)
         {
-            foreach (var row in table.Cells)
-                foreach (var cell in row)
-                    if (cell.Value > 0)
-                    {
-                        Heuristic_Inner_BasicStep(GetColumnByIndex(cell.Y).ToList(), cell.Value);
-                        Heuristic_Inner_BasicStep(GetRowByIndex(cell.X).ToList(), cell.Value);
-                        Heuristic_Inner_BasicStep(cell.Box.Cells, cell.Value);
-                    }
+            Heuristic_Inner_BasicStep(GetColumnByIndex(cell.Y).ToList(), cell.Value);
+            Heuristic_Inner_BasicStep(GetRowByIndex(cell.X).ToList(), cell.Value);
+            Heuristic_Inner_BasicStep(cell.Box.Cells, cell.Value);
         }
 
+        /**
+         * If only one candidate exist, then make it for the cell value, and call BasicStep
+         */
         public void Heuristic_NakedSingle()
         {
             foreach (var column in table.Cells)
@@ -131,38 +132,39 @@ namespace DesktopApp.Controller
                     if ((cell.Candidates.Count == 1) && (cell.Value == 0))
                     {
                         cell.Value = cell.Candidates.First();
-                        //cell.Candidates.Clear();
-                    }
-            Heuristic_BasicStep();
+                        cell.Candidates.Clear();
+                        Heuristic_BasicStep(cell);
+                    }            
         }
 
         public void Heuristic_Inner_HiddenSingle(List<Cell> cells)
         {
             List<Cell> onlyOne_Cell = new List<Cell>();
             for (int i = 0; i < 9; i++) onlyOne_Cell.Add(new Cell());
-            List<int> onlyOne_Int = new List<int>();
-            List<int> occurred = new List<int>();
+
+            int[] occurred = new int[9];
 
             foreach (var cell in cells)
                 if (cell.Value == 0)
                     foreach (var cand in cell.Candidates)
                     {
-                        if (!occurred.Contains(cand))
-                        {
+                        if (occurred[cand - 1] == 0)
                             onlyOne_Cell[cand - 1] = cell;
-                            occurred.Add(cand);
-                            onlyOne_Int.Add(cand);
-                        }
-                        else if(onlyOne_Int.Contains(cand)) onlyOne_Int.Remove(cand);
+                        occurred[cand - 1]++;
                     }
 
-            foreach (var cand in onlyOne_Int)
-            {
-                Cell fresh = onlyOne_Cell[cand - 1];
-                table.Cells[fresh.X][fresh.Y].Candidates.Clear();
-                table.Cells[fresh.X][fresh.Y].Candidates.Add(cand);
-                table.Cells[fresh.X][fresh.Y].Candidates.Sort();
-            }
+            for (int i = 0; i < 9; i++)
+                if (occurred[i] == 1)
+                {
+                    int x = onlyOne_Cell[i].X;
+                    int y = onlyOne_Cell[i].Y;
+                    /*table.Cells[x][y].Candidates.Clear();
+                    table.Cells[x][y].Candidates.Add(i+1);
+                    table.Cells[x][y].Candidates.Sort();*/
+                    table.Cells[x][y].Candidates.Clear();
+                    table.Cells[x][y].Value = i + 1;
+
+                }
         }
 
         public void Heuristic_HiddenSingle()
@@ -176,6 +178,10 @@ namespace DesktopApp.Controller
             foreach (var box in boxes)
                 Heuristic_Inner_HiddenSingle(box.Cells);
         }
+
+        /**
+         * Eliminating candidates
+         */
 
         public void Heuristic_Inner_NakedPair(List<Cell> cells)
         {
@@ -396,17 +402,6 @@ namespace DesktopApp.Controller
             return only2_In_Row;
         }
 
-        public int get_Indexed(int pos, List<int> cand_Numbers)
-        {
-            int i = 0;
-            foreach (var number in cand_Numbers)
-            {
-                if (pos == i)  return number;
-                i++;
-            }
-            return -1;
-        }
-
         public void Heuristic_Inner_Core_XWing(List<Cell> cells, int cand, int expect_1, int expect_2)
         {
             foreach (var cell in cells)
@@ -431,18 +426,18 @@ namespace DesktopApp.Controller
             {
                 foreach (var cand_Numbers in row_Good_Cands)
                 {       // cand value
-                    int cand_Value = cand_Numbers.First() - 1;
+                    int cand_Value = cand_Numbers.ElementAt(0) - 1;
                     // ha előfordul
                     if (cand_Data[cand_Value, 0] == 0)
                     {   //mentem az oszlopértékeket
-                        cand_Data[cand_Value, 1] = get_Indexed(1, cand_Numbers);
-                        cand_Data[cand_Value, 2] = get_Indexed(2, cand_Numbers);
+                        cand_Data[cand_Value, 1] = cand_Numbers.ElementAt(1);
+                        cand_Data[cand_Value, 2] = cand_Numbers.ElementAt(2);
                         cand_Data[cand_Value, 3] = row_I;
                     }
                     if (cand_Data[cand_Value, 0] == 1)
                     {
                         //ha egy cand második előforduló sorában jó oszlopban vannak az értékek
-                        if ((cand_Data[cand_Value, 1] == get_Indexed(1, cand_Numbers)) && (cand_Data[cand_Value, 2] == get_Indexed(2, cand_Numbers)))
+                        if ((cand_Data[cand_Value, 1] == cand_Numbers.ElementAt(1)) && (cand_Data[cand_Value, 2] == cand_Numbers.ElementAt(2)))
                         {
                             cand_Good.Add(cand_Value);
                             cand_Data[cand_Value, 4] = row_I;
