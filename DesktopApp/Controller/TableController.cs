@@ -511,6 +511,7 @@ namespace DesktopApp.Controller
 
         public void MakeCandidatesForCell(Cell cell)
         {
+            if (cell.Candidates.Count > 0) cell.Candidates.Clear();
             if (cell.Value == 0)
             {
                 for (int value = 1; value <= 9; value++)
@@ -519,15 +520,10 @@ namespace DesktopApp.Controller
                     if (CheckCellValidity(cell)) cell.Candidates.Add(value);
                 }
 
-                if (cell.Candidates.Count() == 1)
-                {
-                    cell.Value = cell.Candidates[0];
-                    cell.Candidates.Sort();
-                }
-                else
-                {
-                    cell.Value = 0;
-                }
+                if (cell.Candidates.Count() == 1) cell.Value = cell.Candidates[0];
+                else cell.Value = 0;
+                cell.Candidates.Sort();
+                if (cellPanels.Count > 0) cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
             }
         }
 

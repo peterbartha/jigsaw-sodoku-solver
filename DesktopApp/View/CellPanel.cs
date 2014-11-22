@@ -100,7 +100,7 @@ namespace DesktopApp.View
             border.BorderThickness = new Thickness(1, 1, 1, 1);
 
             number = new TextBlock();
-            number.Text = Convert.ToString(cell.Value);
+            number.Text = cell.Value > 0 && cell.Value < 10 ? Convert.ToString(cell.Value) : "";
             BrushConverter bc2 = new BrushConverter();
             number.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
             number.FontFamily = new FontFamily("Freestyle Script Regular");
@@ -242,8 +242,8 @@ namespace DesktopApp.View
             else
             {
                 SwitchViewToCandidates();
-                CheckCandidates();
             }
+            CheckCandidates();
         }
 
         protected override Size MeasureOverride(Size availableSize)
