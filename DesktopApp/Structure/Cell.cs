@@ -60,6 +60,14 @@ namespace DesktopApp.Structure
             get { return y; }
             set { y = value; }
         }
+
+        public void Remove_Secure(int a)
+        {
+            if (candidates.Contains(a))
+            {
+                candidates.Remove(a);
+            }
+        }
         
     }
 }

@@ -34,11 +34,9 @@ namespace DesktopApp.Controller
         public void RenderTable()
         {
             MakeCandidatesForTableCells();
+            Iteraction();
             CreateCellPanels();
             RenderCellPanels();
-            //CreateOutput();
-            //Iteraction();
-            //CreateOutput();
         }
 
         public void CreateCellPanels()
@@ -89,57 +87,53 @@ namespace DesktopApp.Controller
 
         public void Iteraction()
         {
-            List<Cell> refreshNeeded = new List<Cell>();
-            //Simulate BasicStep
-            table.Cells[3][4].Value = 8;
-            refreshNeeded.Add(table.Cells[3][4]);
-             
-            Heuristic_BasicStep(refreshNeeded);
-            Heuristic_NakedSingle();
-            Heuristic_HiddenSingle();
-            Heuristic_NakedPair();
-            Heuristic_HiddenPair();
-            Heuristic_PointingPair();
-            Heuristic_BoxLineReduction();
-            refreshNeeded.Clear();
+            for (int i = 0; i < 1; i++)
+            {
+                //Heuristic_NakedSingle();
+                /* Heuristic_HiddenSingle();
+                 Heuristic_NakedPair();
+                 Heuristic_HiddenPair();
+                 Heuristic_PointingPair();
+                 Heuristic_BoxLineReduction();
+                 Heuristic_XWing();
+                 refreshNeeded.Clear();*/
+                Heuristic_BasicStep();
+            } 
+
         }
 
-        public void Heuristic_Inner_BasicStep(List<Cell> cells, Cell source)
+        public void Heuristic_Inner_BasicStep(List<Cell> cells, int cand)
         {
             foreach (var cell in cells)
-            {
-                //TODO: mi van ha benne sincs?
-                cell.Candidates.Remove(source.Value);
-                cell.Candidates.Sort();
-            }
+                if (cell.Value != cand)
+                {
+                    cell.Remove_Secure(cand);
+                    cell.Candidates.Sort();
+                }
         }
 
-        public void Heuristic_BasicStep(List<Cell> doRefresh)
+        public void Heuristic_BasicStep()
         {
-            foreach (var cell in doRefresh)
-            {
-                Heuristic_Inner_BasicStep(GetColumnByIndex(cell.Y).ToList(), cell);
-                Heuristic_Inner_BasicStep(GetRowByIndex(cell.X).ToList(), cell);
-                Heuristic_Inner_BasicStep(cell.Box.Cells, cell);
-            }
+            foreach (var row in table.Cells)
+                foreach (var cell in row)
+                    if (cell.Value > 0)
+                    {
+                        Heuristic_Inner_BasicStep(GetColumnByIndex(cell.Y).ToList(), cell.Value);
+                        Heuristic_Inner_BasicStep(GetRowByIndex(cell.X).ToList(), cell.Value);
+                        Heuristic_Inner_BasicStep(cell.Box.Cells, cell.Value);
+                    }
         }
 
         public void Heuristic_NakedSingle()
         {
             foreach (var column in table.Cells)
-            {
                 foreach (var cell in column)
-                {
-                    if (cell.Candidates.Count == 1)
+                    if ((cell.Candidates.Count == 1) && (cell.Value == 0))
                     {
-                        List<Cell> doBasic = new List<Cell>();
-                        doBasic.Add(cell);
-                        cell.Value = cell.Candidates[0];
-                        cell.Candidates.Clear();
-                        Heuristic_BasicStep(doBasic);
+                        cell.Value = cell.Candidates.First();
+                        //cell.Candidates.Clear();
                     }
-                }
-            }
+            Heuristic_BasicStep();
         }
 
         public void Heuristic_Inner_HiddenSingle(List<Cell> cells)
@@ -150,9 +144,7 @@ namespace DesktopApp.Controller
             List<int> occurred = new List<int>();
 
             foreach (var cell in cells)
-            {
                 if (cell.Value == 0)
-                {
                     foreach (var cand in cell.Candidates)
                     {
                         if (!occurred.Contains(cand))
@@ -161,14 +153,8 @@ namespace DesktopApp.Controller
                             occurred.Add(cand);
                             onlyOne_Int.Add(cand);
                         }
-                        else
-                        {
-                            //TODO: mi van ha benne sincs?
-                            onlyOne_Int.Remove(cand);
-                        }
+                        else if(onlyOne_Int.Contains(cand)) onlyOne_Int.Remove(cand);
                     }
-                } 
-            }
 
             foreach (var cand in onlyOne_Int)
             {
@@ -188,59 +174,45 @@ namespace DesktopApp.Controller
             }
 
             foreach (var box in boxes)
-            {
                 Heuristic_Inner_HiddenSingle(box.Cells);
-            }
         }
 
         public void Heuristic_Inner_NakedPair(List<Cell> cells)
         {
             int[,] pairs = new int[5, 2];
             List<int> goodNums = new List<int>();
-            bool inPairs = false;
-
+            
             foreach (var cell in cells)
             {
+                bool inPairs = false;
                 if (cell.Candidates.Count == 2)
                 {
                     for (int i = 0; i < pairs.Length; i++)
-                    {
                         if ((pairs[i, 0] == cell.Candidates.First()) && (pairs[i, 1] == cell.Candidates.Last()))
                         {
                             goodNums.Add(cell.Candidates.First());
                             goodNums.Add(cell.Candidates.Last());
                             inPairs = true;
                         }
-                    }
+
                     if (!inPairs)
                     {
-                        int length = pairs.Length;
-                        pairs[length, 0] = cell.Candidates.First();
-                        pairs[length, 1] = cell.Candidates.Last();
+                        pairs[pairs.Length, 0] = cell.Candidates.First();
+                        pairs[pairs.Length, 1] = cell.Candidates.Last();
                     }
                 }
             }
 
             if (goodNums.Count > 0)
-            {
                 foreach (var cell in cells)
-                {
                     if (cell.Candidates.Count != 2)
-                    {
                         foreach (var good in goodNums)
-                        {
                             foreach (var cand in cell.Candidates)
-                            {
                                 if (cand == good)
                                 {
-                                    cell.Candidates.Remove(cand);
+                                    cell.Remove_Secure(cand);
                                     cell.Candidates.Sort();
                                 }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public void Heuristic_NakedPair()
@@ -264,13 +236,14 @@ namespace DesktopApp.Controller
 
             foreach (var cell in cells)
             {
-                if (cell.Candidates.Contains(a)) count_A++;
-                if (cell.Candidates.Contains(b)) count_B++;
-
-                if (cell.Candidates.Contains(a) && cell.Candidates.Contains(b))
+                if (cell.Value == 0)
                 {
-                    goodCells.Add(cell);                       
-                }               
+                    if (cell.Candidates.Contains(a)) count_A++;
+                    if (cell.Candidates.Contains(b)) count_B++;
+
+                    if (cell.Candidates.Contains(a) && cell.Candidates.Contains(b))
+                        goodCells.Add(cell);    
+                }
             }
 
             if((goodCells.Count == 2) && (count_A == 2) && (count_B == 2))
@@ -288,26 +261,16 @@ namespace DesktopApp.Controller
         public void Heuristic_HiddenPair()
         {
             foreach (var column in table.Cells)
-            {
                 foreach (var cell in column)
-                {
                     if (cell.Value == 0)
-                    {
                         foreach (var cand in cell.Candidates)
-                        {
                             foreach (var candnew in cell.Candidates)
-                            {
                                 if (cand < candnew)
                                 {
                                     Heuristic_Inner_HiddenPair(GetColumnByIndex(cell.Y).ToList(), cand, candnew);
                                     Heuristic_Inner_HiddenPair(GetRowByIndex(cell.X).ToList(), cand, candnew);
                                     Heuristic_Inner_HiddenPair(cell.Box.Cells, cand, candnew);
                                 }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public void Heuristic_Inner_PointingPair(List<Cell> cells, int a, Box except)
@@ -316,7 +279,7 @@ namespace DesktopApp.Controller
             {
                 if (!cell.Box.Equals(except))
                 {
-                    cell.Candidates.Remove(a);
+                    cell.Remove_Secure(a);
                     cell.Candidates.Sort();
                 }
             }
@@ -325,94 +288,74 @@ namespace DesktopApp.Controller
         public void Heuristic_PointingPair()
         {
             foreach (var box in boxes)
-            {
                 foreach (var cell in box.Cells)
-                {
-                    int[] cand_Place_Column = new int[9];
-                    int[] cand_Place_Row = new int[9];
-                    int[] cand_Count_Column = new int[9];
-                    int[] cand_Count_Row = new int[9];
-
-                    foreach (var cand in cell.Candidates)
+                    if (cell.Value == 0)
                     {
-                        cand_Place_Column[cand - 1] = cell.Y;
-                        cand_Place_Row[cand - 1] = cell.X;
-                        bool match_Column = true;
-                        bool match_Row = true;
+                        int[] cand_Place_Column = new int[9];
+                        int[] cand_Place_Row = new int[9];
+                        int[] cand_Count_Column = new int[9];
+                        int[] cand_Count_Row = new int[9];
 
-                        foreach (var nd_Cell in box.Cells)
+                        foreach (var cand in cell.Candidates)
                         {
-                            if (nd_Cell.Y != cand_Place_Column[cand - 1])
-                            {
-                                match_Column = false;
-                            }
-                            else
-                            {
-                                cand_Count_Column[cand - 1]++;
-                            }
-                            if (nd_Cell.X != cand_Place_Row[cand - 1])
-                            {
-                                match_Row = false;
-                            }
-                            else
-                            {
-                                cand_Count_Row[cand - 1]++;
-                            }
-                        }
-                        if (match_Column && (cand_Count_Column[cand - 1] > 1))
-                        {
-                            Heuristic_Inner_PointingPair(GetColumnOfCell(cell).ToList(), cand, box);
-                        }
-                        if (match_Row && (cand_Count_Row[cand - 1] > 1))
-                        {
-                            Heuristic_Inner_PointingPair(GetRowOfCell(cell).ToList(), cand, box);
-                        }
-                    }                  
-                }
-            }
+                            cand_Place_Column[cand - 1] = cell.Y;
+                            cand_Place_Row[cand - 1] = cell.X;
+                            bool match_Column = true;
+                            bool match_Row = true;
+
+                            foreach (var nd_Cell in box.Cells)
+                                if (nd_Cell.Value == 0)
+                                {
+                                    if (nd_Cell.Y != cand_Place_Column[cand - 1]) match_Column = false;
+                                    else cand_Count_Column[cand - 1]++;
+
+                                    if (nd_Cell.X != cand_Place_Row[cand - 1]) match_Row = false;
+                                    else cand_Count_Row[cand - 1]++;
+                                }
+
+                            if (match_Column && (cand_Count_Column[cand - 1] > 1))
+                                Heuristic_Inner_PointingPair(GetColumnOfCell(cell).ToList(), cand, box);
+
+                            if (match_Row && (cand_Count_Row[cand - 1] > 1))
+                                Heuristic_Inner_PointingPair(GetRowOfCell(cell).ToList(), cand, box);
+                        }     
+                    }
         }
 
         public void Heuristic_Inner_Core_BoxLineReduction(List<Cell> cells, int a, List<Cell> expect)
         {
             foreach (var cell in cells)
-            {
-                if (!expect.Contains(cell))
+                if (!expect.Contains(cell) && (cell.Value == 0))
                 {
-                    cell.Candidates.Remove(a);
+                    cell.Remove_Secure(a);
                     cell.Candidates.Sort();
                 }
-            }
         }
 
         public void Heuristic_Inner_Shell_BoxLineReduction(List<Cell> cells)
         {
             foreach (var cell in cells)
-            {
-                Box[] cand_Place_Box = new Box[9];
-                int[] cand_Count = new int[9];
-
-                foreach (var cand in cell.Candidates)
+                if (cell.Value == 0)
                 {
-                    cand_Place_Box[cand - 1] = cell.Box;
-                    bool match_Box = true;
+                    Box[] cand_Place_Box = new Box[9];
+                    int[] cand_Count = new int[9];
 
-                    foreach (var nd_Cell in cells)
+                    foreach (var cand in cell.Candidates)
                     {
-                        if (!nd_Cell.Box.Equals(cand_Place_Box[cand - 1]))
-                        {
-                            match_Box = false;
-                        }
-                        else
-                        {
-                            cand_Count[cand - 1]++;
-                        }
-                    }
-                    if (match_Box && (cand_Count[cand - 1] > 1))
-                    {
-                        Heuristic_Inner_Core_BoxLineReduction(cell.Box.Cells, cand, cells);
+                        cand_Place_Box[cand - 1] = cell.Box;
+                        bool match_Box = true;
+
+                        foreach (var nd_Cell in cells)
+                            if (nd_Cell.Value == 0)
+                            {
+                                if (!nd_Cell.Box.Equals(cand_Place_Box[cand - 1])) match_Box = false;
+                                else cand_Count[cand - 1]++;
+                            }
+
+                        if (match_Box && (cand_Count[cand - 1] > 1))
+                            Heuristic_Inner_Core_BoxLineReduction(cell.Box.Cells, cand, cells);
                     }
                 }
-            }
         }
 
         public void Heuristic_BoxLineReduction()
@@ -423,33 +366,104 @@ namespace DesktopApp.Controller
                 Heuristic_Inner_Shell_BoxLineReduction(GetRowByIndex(i).ToList());
             }
         }
-       
-        /* Fejlesztes alatt!!!
-        public void Heuristic_XWing(){
-            List<List<int>> only2 = new List<List<int>>();
-            
-            for (int row = 0; row < 9; row++)
-            {
-                List<int> only2_Row = new List<int>();
-                int[] cand_Count_Row = new int[9];
 
-                foreach (var cell in GetRowByIndex(row).ToList())
-                {
+        public List<List<int>> Heuristic_Inner_Only2_XWing(List<Cell> cells)
+        {
+            // [x,0] cand count [x,1] first column num [x,2] second column num
+            int[,] cand_Data = new int[9,3];
+            List<List<int>> only2_In_Row = new List<List<int>>();
+
+            foreach (var cell in cells)
+                if (cell.Value == 0)
                     foreach (var cand in cell.Candidates)
                     {
-                        cand_Count_Row[cand - 1]++;
+                        if (cand_Data[cand, 0] == 0) cand_Data[cand, 1] = cell.Y;
+                        if (cand_Data[cand, 0] == 1) cand_Data[cand, 2] = cell.Y;
+                        cand_Data[cand, 0]++;
                     }
-                }
-                foreach (var cand in cand_Count_Row)
+                
+
+            for (int i = 0; i < 9; i++)
+            {
+                List<int> cand_Row = new List<int>();
+                if (cand_Data[i,0] == 2)
                 {
-                    if (cand_Count_Row[cand - 1] == 2)
-                    {
-                        only2_Row.Add(cand);
-                    }
+                    cand_Row.Add(i);
+                    for (int j = 1; j < 3; j++) cand_Row.Add(cand_Data[i, j]);
                 }
-                only2.Add(only2_Row);
+                only2_In_Row.Add(cand_Row);
             }
-        }*/
+            return only2_In_Row;
+        }
+
+        public int get_Indexed(int pos, List<int> cand_Numbers)
+        {
+            int i = 0;
+            foreach (var number in cand_Numbers)
+            {
+                if (pos == i)  return number;
+                i++;
+            }
+            return -1;
+        }
+
+        public void Heuristic_Inner_Core_XWing(List<Cell> cells, int cand, int expect_1, int expect_2)
+        {
+            foreach (var cell in cells)
+                if ((cell.Value == 0) && (cell.Candidates.Contains(cand)) && (cell.X != expect_1) && (cell.X != expect_2))
+                    cell.Remove_Secure(cand);
+        }
+       
+        public void Heuristic_XWing()
+        {
+            List<List<List<int>>> only2_Rows = new List<List<List<int>>>();
+            for (int row = 0; row < 9; row++)
+            {   
+                // [x,0] cand >>>>>VALUE<<<<<< , [x,1] first column num [x,2] second column num
+                only2_Rows.Add(Heuristic_Inner_Only2_XWing(GetRowByIndex(row).ToList()));
+            }
+            // cand_Data: [x.0] cand count, [x.1] first column, [x.2] second column, [x.3] first cand's row number, [x.4] second cand's row number
+            int[,] cand_Data = new int[9, 5];
+            List<int> cand_Good = new List<int> ();
+
+            int row_I = 0;
+            foreach (var row_Good_Cands in only2_Rows)
+            {
+                foreach (var cand_Numbers in row_Good_Cands)
+                {       // cand value
+                    int cand_Value = cand_Numbers.First() - 1;
+                    // ha előfordul
+                    if (cand_Data[cand_Value, 0] == 0)
+                    {   //mentem az oszlopértékeket
+                        cand_Data[cand_Value, 1] = get_Indexed(1, cand_Numbers);
+                        cand_Data[cand_Value, 2] = get_Indexed(2, cand_Numbers);
+                        cand_Data[cand_Value, 3] = row_I;
+                    }
+                    if (cand_Data[cand_Value, 0] == 1)
+                    {
+                        //ha egy cand második előforduló sorában jó oszlopban vannak az értékek
+                        if ((cand_Data[cand_Value, 1] == get_Indexed(1, cand_Numbers)) && (cand_Data[cand_Value, 2] == get_Indexed(2, cand_Numbers)))
+                        {
+                            cand_Good.Add(cand_Value);
+                            cand_Data[cand_Value, 4] = row_I;
+                        }
+                    }
+                    if ((cand_Data[cand_Value, 0] > 1) && (cand_Good.Contains(cand_Value))) cand_Good.Remove(cand_Value);
+
+                    cand_Data[cand_Value, 0]++;
+                }  
+                row_I++;
+            }
+
+            for (int i = 0; i < 9; i++)
+            {   // cand_Data: [x.0] cand count, [x.1] first column, [x.2] second column, [x.3] first cand's row number, [x.4] second cand's row number
+                if (cand_Good.Contains(i + 1))
+                {
+                    Heuristic_Inner_Core_XWing(GetColumnByIndex(cand_Data[i, 1]).ToList(), i + 1, cand_Data[i, 3], cand_Data[i, 4]);
+                    Heuristic_Inner_Core_XWing(GetColumnByIndex(cand_Data[i, 2]).ToList(), i + 1, cand_Data[i, 3], cand_Data[i, 4]);
+                }
+            }
+        }
 
         public bool CheckTable()
         {
