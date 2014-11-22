@@ -87,18 +87,13 @@ namespace DesktopApp.Controller
 
         public void Iteraction()
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Heuristic_HiddenSingle();
                 Heuristic_NakedSingle();
-                /*Heuristic_HiddenSingle();
-                 Heuristic_NakedPair();
-                 Heuristic_HiddenPair();
-                 Heuristic_PointingPair();
-                 Heuristic_BoxLineReduction();
-                 Heuristic_XWing();
-                 refreshNeeded.Clear();*/
-                RefreshCellPanels();
+                Heuristic_NakedPair();
+                Heuristic_HiddenPair();
+                Heuristic_BoxLineReduction();
             }
         }
 
@@ -109,6 +104,7 @@ namespace DesktopApp.Controller
                 {
                     cell.Remove_Secure(cand);
                     cell.Candidates.Sort();
+                    cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
                 }
         }
         
@@ -132,6 +128,7 @@ namespace DesktopApp.Controller
                     if ((cell.Candidates.Count == 1) && (cell.Value == 0))
                     {
                         cell.Value = cell.Candidates.First();
+                        cellPanels.ElementAt(cell.Y).ElementAt(cell.X).ChangeCellValue(cell.Candidates.First());
                         cell.Candidates.Clear();
                         Heuristic_BasicStep(cell);
                     }            
@@ -158,12 +155,10 @@ namespace DesktopApp.Controller
                 {
                     int x = onlyOne_Cell[i].X;
                     int y = onlyOne_Cell[i].Y;
-                    /*table.Cells[x][y].Candidates.Clear();
-                    table.Cells[x][y].Candidates.Add(i+1);
-                    table.Cells[x][y].Candidates.Sort();*/
-                    table.Cells[x][y].Candidates.Clear();
-                    table.Cells[x][y].Value = i + 1;
-
+                    table.Cells[y][x].Candidates.Clear();
+                    table.Cells[y][x].Value = i + 1;
+                    cellPanels.ElementAt(y).ElementAt(x).ChangeCellValue(i+1);
+                    Heuristic_BasicStep(table.Cells[y][x]);
                 }
         }
 
@@ -185,7 +180,8 @@ namespace DesktopApp.Controller
 
         public void Heuristic_Inner_NakedPair(List<Cell> cells)
         {
-            int[,] pairs = new int[5, 2];
+            int[,] pairs = new int[10, 2];
+            int pair_Count = 0;
             List<int> goodNums = new List<int>();
             
             foreach (var cell in cells)
@@ -193,7 +189,7 @@ namespace DesktopApp.Controller
                 bool inPairs = false;
                 if (cell.Candidates.Count == 2)
                 {
-                    for (int i = 0; i < pairs.Length; i++)
+                    for (int i = 0; i < pair_Count; i++)
                         if ((pairs[i, 0] == cell.Candidates.First()) && (pairs[i, 1] == cell.Candidates.Last()))
                         {
                             goodNums.Add(cell.Candidates.First());
@@ -203,8 +199,9 @@ namespace DesktopApp.Controller
 
                     if (!inPairs)
                     {
-                        pairs[pairs.Length, 0] = cell.Candidates.First();
-                        pairs[pairs.Length, 1] = cell.Candidates.Last();
+                        pairs[pair_Count, 0] = cell.Candidates.First();
+                        pairs[pair_Count, 1] = cell.Candidates.Last();
+                        pair_Count++;
                     }
                 }
             }
@@ -218,6 +215,7 @@ namespace DesktopApp.Controller
                                 {
                                     cell.Remove_Secure(cand);
                                     cell.Candidates.Sort();
+                                    cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
                                 }
         }
 
@@ -239,29 +237,27 @@ namespace DesktopApp.Controller
             int count_A = 0;
             int count_B = 0;
             List<Cell> goodCells = new List<Cell>();
+            List<Cell> goodReturn_Cells = new List<Cell>();
 
             foreach (var cell in cells)
-            {
                 if (cell.Value == 0)
                 {
                     if (cell.Candidates.Contains(a)) count_A++;
                     if (cell.Candidates.Contains(b)) count_B++;
-
                     if (cell.Candidates.Contains(a) && cell.Candidates.Contains(b))
                         goodCells.Add(cell);    
                 }
-            }
 
             if((goodCells.Count == 2) && (count_A == 2) && (count_B == 2))
-            {
-                foreach (var goodCell in goodCells)
-                {
-                    goodCell.Candidates.Clear();
-                    goodCell.Candidates.Add(a);
-                    goodCell.Candidates.Add(b);
-                    goodCell.Candidates.Sort();
-                }
-            }
+                foreach (var cell in cells)
+                    if (goodCells.Contains(cell))
+                    {
+                        cell.Candidates.Clear();
+                        cell.Candidates.Add(a);
+                        cell.Candidates.Add(b);
+                        cell.Candidates.Sort();
+                        cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
+                    }
         }
 
         public void Heuristic_HiddenPair()
@@ -287,6 +283,7 @@ namespace DesktopApp.Controller
                 {
                     cell.Remove_Secure(a);
                     cell.Candidates.Sort();
+                    cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
                 }
             }
         }
@@ -335,6 +332,7 @@ namespace DesktopApp.Controller
                 {
                     cell.Remove_Secure(a);
                     cell.Candidates.Sort();
+                    cellPanels.ElementAt(cell.Y).ElementAt(cell.X).Refresh();
                 }
         }
 
