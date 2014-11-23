@@ -57,5 +57,10 @@ namespace DesktopApp
             this.DragMove();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            tableCtrl.Iteraction();
+        }
+
     }
 }

@@ -210,6 +210,12 @@ namespace DesktopApp.View
             Refresh();
         }
 
+        public void ChangeCellValue_ByHeuristic(int value)
+        {
+            cell.Value = value;
+            number.Text = Convert.ToString(cell.Value);
+        }
+
         private void CheckCandidates()
         {
             HideAllCandidates();

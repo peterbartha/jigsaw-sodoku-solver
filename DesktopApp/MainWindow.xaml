@@ -58,7 +58,7 @@
             <Label Content="Other options" Canvas.Left="25" Canvas.Top="517" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
             <CheckBox Content="Stopwatch" Canvas.Left="45" Canvas.Top="591" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
             <CheckBox Content="Stopwatch" Canvas.Left="45" Canvas.Top="621" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
-            <Button Content="Take a step" Canvas.Left="25" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold"/>
+            <Button Content="Take a step" Canvas.Left="25" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="Button_Click"/>
             <Button Content="Auto solve" Canvas.Left="25" Canvas.Top="166" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14"/>
             <Button Content="Back one step" Canvas.Left="166" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14"/>
         </Canvas>
