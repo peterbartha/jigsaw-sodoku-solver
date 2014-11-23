@@ -183,6 +183,8 @@ namespace DesktopApp.View
             else if (field.Text == "")
             {
                 EditCellValue(0);
+                //if (cell.Value > 0 && cell.Value <= 9) EditCellValue(cell.Value);
+                //else EditCellValue(0);
                 editCanvas.Visibility = Visibility.Hidden;
                 Refresh();
             }
@@ -214,6 +216,7 @@ namespace DesktopApp.View
         {
             cell.Value = value;
             number.Text = Convert.ToString(cell.Value);
+            //Refresh();
         }
 
         private void CheckCandidates()
@@ -223,6 +226,7 @@ namespace DesktopApp.View
             {
                 candidates[candidate - 1].Visibility = Visibility.Visible;
             }
+            //if (candidates.Count == 0) number.Text = Convert.ToString(cell.Value);
         }
 
         private void HideAllCandidates()

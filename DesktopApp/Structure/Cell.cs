@@ -61,7 +61,7 @@ namespace DesktopApp.Structure
             set { y = value; }
         }
 
-        public void Remove_Secure(int a)
+        public void RemoveSecure(int a)
         {
             if (candidates.Contains(a))
             {
