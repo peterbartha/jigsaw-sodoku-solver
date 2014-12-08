@@ -208,15 +208,8 @@ namespace DesktopApp.View
 
         public void ChangeCellValue(int value)
         {
-            EditCellValue(value);
-            Refresh();
-        }
-
-        public void ChangeCellValue_ByHeuristic(int value)
-        {
             cell.Value = value;
             number.Text = Convert.ToString(cell.Value);
-            //Refresh();
         }
 
         private void CheckCandidates()
@@ -265,8 +258,23 @@ namespace DesktopApp.View
             if (cell.Value > 0) SwitchViewToResult();
             else
             {
-                SwitchViewToCandidates();
+                if (tableController.ShowCandidates) SwitchViewToCandidates();
+                else SwitchViewToResult();
                 CheckCandidates();
+            }
+        }
+
+        public void RefreshView()
+        {
+            if (cell.Value > 0) SwitchViewToResult();
+            else
+            {
+                if (tableController.ShowCandidates) SwitchViewToCandidates();
+                else
+                {
+                    resultCanvas.Visibility = Visibility.Visible;
+                    candidateCanvas.Visibility = Visibility.Hidden;
+                }
             }
         }
 

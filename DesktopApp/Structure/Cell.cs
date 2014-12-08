@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DesktopApp.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,9 @@ namespace DesktopApp.Structure
         private int val;
         private int x;
         private int y;
+        private CellPanel panel;
+
+
 
         public Cell() { }
 
@@ -61,11 +65,17 @@ namespace DesktopApp.Structure
             set { y = value; }
         }
 
-        public void RemoveSecure(int a)
+        public CellPanel Panel
         {
-            if (candidates.Contains(a))
+            get { return panel; }
+            set { panel = value; }
+        }
+
+        public void RemoveCandidateIfExist(int element)
+        {
+            if (candidates.Contains(element))
             {
-                candidates.Remove(a);
+                candidates.Remove(element);
             }
         }
         

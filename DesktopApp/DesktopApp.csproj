@@ -75,7 +75,16 @@
     </ApplicationDefinition>
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\MapController.cs" />
+    <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />
+    <Compile Include="Heuristics\BoxLineReduction.cs" />
+    <Compile Include="Heuristics\Heuristic.cs" />
+    <Compile Include="Heuristics\HiddenPair.cs" />
+    <Compile Include="Heuristics\HiddenSingle.cs" />
+    <Compile Include="Heuristics\NakedPair.cs" />
+    <Compile Include="Heuristics\NakedSingle.cs" />
+    <Compile Include="Heuristics\PointingPair.cs" />
+    <Compile Include="Heuristics\XWing.cs" />
     <Compile Include="Structure\Box.cs" />
     <Compile Include="Structure\Cell.cs" />
     <Compile Include="Structure\Table.cs" />
@@ -87,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Heuristics\Utility.cs" />
     <Compile Include="View\CellPanel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
