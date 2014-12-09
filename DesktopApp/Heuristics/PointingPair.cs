@@ -71,10 +71,14 @@ namespace DesktopApp.Heuristics
             foreach (var cell in cells)
                 if (!cell.Box.Equals(except))
                 {
-                    cell.RemoveCandidateIfExist(a);
-                    cell.Candidates.Sort();
-                    cell.Panel.Refresh();
-                    isChanged = true;
+                    if (cell.Candidates.Count > 0 && cell.Candidates.Contains(a))
+                    {
+                        cell.RemoveCandidateIfExist(a);
+                        cell.Candidates.Sort();
+                        cell.Panel.Refresh();
+                        isChanged = true;
+                    }
+                    else isChanged = false;
                 }
         }
     }

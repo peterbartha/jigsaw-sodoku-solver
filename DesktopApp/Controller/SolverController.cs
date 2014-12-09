@@ -11,14 +11,14 @@ namespace DesktopApp.Controller
     class SolverController
     {
         private List<Heuristic> heuristics;
-        private int nextId;
+        private int actualId;
         private Table table;
 
         public SolverController(Table t)
         {
             this.table = t;
             InitializeHeuristics();
-            nextId = 0;
+            Actual = 0;
         }
 
         private void InitializeHeuristics() {
@@ -30,46 +30,45 @@ namespace DesktopApp.Controller
             heuristics.Add(new PointingPair(table));
             heuristics.Add(new BoxLineReduction(table));
             heuristics.Add(new XWing(table));
+            heuristics.Add(new RandomPick(table));
         }
 
         public void TakeOneStep()
         {
-            if (heuristics.ElementAt(NextId).Enabled)
+            if (heuristics.ElementAt(Actual).Apply())
             {
-                if (nextId < heuristics.Count() - 1)
+                Actual = 0;
+                return;
+            }
+
+            for (int i = Actual + 1; i < heuristics.Count; i++)
+            {
+                if (heuristics[i].Enabled)
                 {
-                    if (heuristics.ElementAt(NextId++).Apply())
-                    {
-                        nextId = 0;
-                    }
+                    Actual = i;
+                    return;
                 }
-                else nextId = 0;
             }
-            else
-            {
-                nextId++;
-                TakeOneStep();
-            }
-           
+            Actual = 0;
         }
 
         public void AutoSolve()
         {
             foreach (var heuristic in heuristics)
             {
-                nextId = heuristics.IndexOf(heuristic) + 1;
+                Actual = heuristics.IndexOf(heuristic) + 1;
                 if (heuristic.Apply())
                 {
-                    nextId = 0;
+                    Actual = 0;
                     AutoSolve();
                 }
             }
         }
 
-        public int NextId
+        public int Actual
         {
-            get { return nextId; }
-            set { nextId = value; }
+            get { return actualId; }
+            set { actualId = value; }
         }
 
         public List<Heuristic> Heuristics
