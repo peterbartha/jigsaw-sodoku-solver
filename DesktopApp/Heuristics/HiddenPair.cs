@@ -51,12 +51,16 @@ namespace DesktopApp.Heuristics
                 foreach (var cell in cells)
                     if (goodCells.Contains(cell))
                     {
-                        cell.Candidates.Clear();
-                        cell.Candidates.Add(a);
-                        cell.Candidates.Add(b);
-                        cell.Candidates.Sort();
-                        cell.Panel.Refresh();
-                        isChanged = true;
+                        if (cell.Candidates.Count == 2 && ((a == cell.Candidates[0] && b == cell.Candidates[1]) || (b == cell.Candidates[0] && a == cell.Candidates[1]))) {
+                            isChanged = false;
+                        } else {                         
+                            cell.Candidates.Clear();
+                            cell.Candidates.Add(a);
+                            cell.Candidates.Add(b);
+                            cell.Candidates.Sort();
+                            cell.Panel.Refresh();
+                            isChanged = true;
+                        }
                     }
         }
     }

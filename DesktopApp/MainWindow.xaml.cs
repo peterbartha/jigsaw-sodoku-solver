@@ -70,7 +70,7 @@ namespace DesktopApp
         private void Button_TakeOneStep(object sender, RoutedEventArgs e)
         {
             solver.TakeOneStep();
-            Canvas.SetTop(StepPointer, 289 + 30 * solver.NextId);
+            Canvas.SetTop(StepPointer, 289 + 30 * solver.Actual);
         }
 
         private void ChkNakedPair_Checked(object sender, RoutedEventArgs e)
@@ -102,12 +102,20 @@ namespace DesktopApp
             if (solver != null)
                 solver.Heuristics.ElementAt(6).Enabled = (Boolean)ChkXWing.IsChecked;
         }
+        private void ChkRandomPick_Checked(object sender, RoutedEventArgs e)
+        {
+            if (solver != null)
+                solver.Heuristics.ElementAt(7).Enabled = (Boolean)ChkRandomPick.IsChecked;
+        }
+
+
 
         private void AutoSolve_Click(object sender, RoutedEventArgs e)
         {
             if (solver != null)
                 solver.AutoSolve();
         }
+
 
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {

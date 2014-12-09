@@ -85,9 +85,11 @@
     <Compile Include="Heuristics\NakedPair.cs" />
     <Compile Include="Heuristics\NakedSingle.cs" />
     <Compile Include="Heuristics\PointingPair.cs" />
+    <Compile Include="Heuristics\RandomPick.cs" />
     <Compile Include="Heuristics\XWing.cs" />
     <Compile Include="Structure\Box.cs" />
     <Compile Include="Structure\Cell.cs" />
+    <Compile Include="Structure\Problem.cs" />
     <Compile Include="Structure\Table.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
