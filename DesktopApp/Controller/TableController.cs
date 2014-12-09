@@ -93,6 +93,10 @@ namespace DesktopApp.Controller
                 foreach (var cell in row)
                 {
                     valid = CheckCellValidity(cell);
+                    if (!valid)
+                    {
+                        return valid;
+                    }
                 }
             }
             return valid;
@@ -100,7 +104,8 @@ namespace DesktopApp.Controller
 
         public bool CheckCellValidity(Cell cell)
         {
-            if (cell.Value == 0) return true;
+            //TODO: 
+            if (cell.Value == 0) return false;
             int count = 0;
 
             // Row
@@ -138,16 +143,9 @@ namespace DesktopApp.Controller
                     cell.Value = value; // testing
                     if (CheckCellValidity(cell)) cell.Candidates.Add(value);
                 }
+                cell.Value = 0;
+                cell.Candidates.Sort();
 
-                if (cell.Candidates.Count() == 1)
-                {
-                    cell.Panel.ChangeCellValue(cell.Candidates.First());
-                }
-                else
-                {
-                    cell.Value = 0;
-                    cell.Candidates.Sort();
-                }
                 if (cellPanels.Count > 0) cell.Panel.Refresh();
             }
         }

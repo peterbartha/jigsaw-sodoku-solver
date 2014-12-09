@@ -13,7 +13,6 @@ namespace DesktopApp.Controller
         private List<Heuristic> heuristics;
         private int nextId;
         private Table table;
-        
 
         public SolverController(Table t)
         {
@@ -51,6 +50,7 @@ namespace DesktopApp.Controller
                 nextId++;
                 TakeOneStep();
             }
+           
         }
 
         public void AutoSolve()
@@ -64,7 +64,6 @@ namespace DesktopApp.Controller
                     AutoSolve();
                 }
             }
-
         }
 
         public int NextId
