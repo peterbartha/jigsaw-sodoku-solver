@@ -77,6 +77,7 @@
     <Compile Include="Controller\MapController.cs" />
     <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />
+    <Compile Include="Databases\MapData.cs" />
     <Compile Include="Heuristics\BoxLineReduction.cs" />
     <Compile Include="Heuristics\Heuristic.cs" />
     <Compile Include="Heuristics\HiddenPair.cs" />

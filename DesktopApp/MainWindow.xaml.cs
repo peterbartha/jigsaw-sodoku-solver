@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Controller;
+using DesktopApp.Databases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,24 +26,29 @@ namespace DesktopApp
         TableController tableCtrl;
         MapController mapCtrl;
         SolverController solver;
+        
 
         public MainWindow()
         {
             InitializeComponent();
-            tableCtrl = new TableController(this);
-            mapCtrl = new MapController(tableCtrl);
-            solver = new SolverController(tableCtrl.Table);
-
+            GenerateNewMap(0);
+            
             logoPanel.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
             logoImg.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
             titleBar.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
 
             exitIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Exit);
             minimalIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Minimal);
-
-            tableCtrl.ShowCandidates = true;
         }
 
+        private void GenerateNewMap(int mapIndex)
+        {
+            tableCtrl = new TableController(this);
+            mapCtrl = new MapController(tableCtrl, mapIndex);
+            solver = new SolverController(tableCtrl.Table);
+            tableCtrl.ShowCandidates = true;
+            Canvas.SetTop(StepPointer, 289);
+        }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)
         {
@@ -101,6 +107,26 @@ namespace DesktopApp
         {
             if (solver != null)
                 solver.AutoSolve();
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<string> data = new List<string>();
+            for (int i = 0; i < mapCtrl.mapData.GetMapCount(); i++)
+                data.Add((i+1).ToString());
+
+            var comboBox = sender as ComboBox;
+            comboBox.ItemsSource = data;
+            comboBox.SelectedIndex = 0;
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            string value = comboBox.SelectedItem as string;
+            GenerateNewMap(Convert.ToInt32(value) - 1);
         }
 
         private void CheckBox_ShowCandidates(object sender, RoutedEventArgs e)
