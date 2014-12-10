@@ -26,12 +26,17 @@ namespace DesktopApp
         TableController tableCtrl;
         MapController mapCtrl;
         SolverController solver;
-        
+        public enum GameState { Ended, InGame, Fault }
+        int statePointerTop;
 
         public MainWindow()
         {
             InitializeComponent();
             GenerateNewMap(0);
+
+            TheEnd.Visibility = Visibility.Hidden;
+            statePointerTop = 349;
+            Canvas.SetTop(StepPointer, statePointerTop);
             
             logoPanel.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
             logoImg.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
@@ -45,9 +50,8 @@ namespace DesktopApp
         {
             tableCtrl = new TableController(this);
             mapCtrl = new MapController(tableCtrl, mapIndex);
-            solver = new SolverController(tableCtrl.Table);
+            solver = new SolverController(tableCtrl.Table, this);
             tableCtrl.ShowCandidates = true;
-            Canvas.SetTop(StepPointer, 289);
         }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)
@@ -70,7 +74,7 @@ namespace DesktopApp
         private void Button_TakeOneStep(object sender, RoutedEventArgs e)
         {
             solver.TakeOneStep();
-            Canvas.SetTop(StepPointer, 289 + 30 * solver.Actual);
+            Canvas.SetTop(StepPointer, statePointerTop + 30 * solver.Actual);
         }
 
         private void ChkNakedPair_Checked(object sender, RoutedEventArgs e)
@@ -143,30 +147,53 @@ namespace DesktopApp
                 tableCtrl.ShowCandidates = (Boolean)ChkShowCandidates.IsChecked;
         }
 
-        /*public GameState CheckGameState()
+        public GameState CheckGameState()
         {
+            int empty = 0;
+            int fault = 0;
+
             foreach (var row in tableCtrl.Table.Cells)
             {
                 foreach (var cell in row)
                 {
                     if (cell.Value == 0 && cell.Candidates.Count() == 0)
                     {
-                        return GameState.Fault;
+                        fault++;
                     }
                     else if (cell.Value == 0)
                     {
-                        return GameState.InGame;
+                        empty++;
                     }
-                    else return GameState.Ended;
                 }
             }
-        }*/
+
+            if (fault > 0)
+            {
+                ShowErrorPanel();
+                return GameState.Fault;
+            }
+            else if (empty > 0) return GameState.InGame;
+
+            ShowSuccessPanel();
+            return GameState.Ended;
+        }
+
+        private void ShowErrorPanel()
+        {
+            teTitle.Content = "Error";
+            TheEnd.Visibility = Visibility.Visible;
+        }
+
+        private void ShowSuccessPanel()
+        {
+            teTitle.Content = "Success";
+            TheEnd.Visibility = Visibility.Visible;
+        }
+
+        private void hideTheEnd_Click(object sender, RoutedEventArgs e)
+        {
+            TheEnd.Visibility = Visibility.Hidden;
+        }
 
     }
-    /*
-    private enum GameState
-    {
-        Ended, InGame, Fault
-    }
-     * */
 }

@@ -46,24 +46,24 @@
                 <Label Content="Jigsaw Sudoku" Canvas.Left="78" Canvas.Top="32" Width="135" Foreground="#FFE3EFB9" FontSize="18" FontFamily="Segoe UI Semibold"/>
                 <Label Content="Solver" Canvas.Left="202" Canvas.Top="32" Width="81" Foreground="#FFB3D7E9" FontSize="18" FontFamily="Segoe UI Light"/>
             </Canvas>
-            <CheckBox x:Name="ChkBasicStep" Content="Naked Single" Canvas.Left="45" Canvas.Top="281" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
-            <CheckBox x:Name="ChkNakedSingle" Content="Hidden Single" Canvas.Left="45" Canvas.Top="311" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
-            <CheckBox x:Name="ChkNakedPair" Content="Naked pair" Canvas.Left="45" Canvas.Top="341" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkNakedPair_Checked"/>
-            <CheckBox x:Name="ChkHiddenPair" Content="Hidden pair" Canvas.Left="45" Canvas.Top="371" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkHiddenPair_Checked"/>
-            <CheckBox x:Name="ChkPointingPair" Content="Pointing pair" Canvas.Left="45" Canvas.Top="401" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkPointingPair_Checked"/>
-            <CheckBox x:Name="ChkBoxLineReduuction" Content="Box line reduction" Canvas.Left="45" Canvas.Top="431" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkBoxLineReduuction_Checked"/>
-            <CheckBox x:Name="ChkXWing" Content="X-Wing" Canvas.Left="45" Canvas.Top="461" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkXWing_Checked"/>
-            <CheckBox x:Name="ChkRandomPick" Content="Random Pick" Canvas.Left="45" Canvas.Top="491" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkRandomPick_Checked"/>
-            <Label Content="Game strategies" Canvas.Left="25" Canvas.Top="237" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
-            <CheckBox x:Name="ChkShowCandidates" Content="Show candidates" Canvas.Left="45" Canvas.Top="563" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="CheckBox_ShowCandidates"/>
-            <Label Content="Other options" Canvas.Left="25" Canvas.Top="521" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
-            <CheckBox x:Name="ChkStopWatch" Content="Stopwatch" Canvas.Left="45" Canvas.Top="593" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
-            <Button Content="Take a step" Canvas.Left="25" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="Button_TakeOneStep"/>
-            <Button x:Name="AutoSolve" Content="Auto solve" Canvas.Left="25" Canvas.Top="166" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="AutoSolve_Click"/>
-            <Button Content="Back one step" Canvas.Left="166" Canvas.Top="121" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14"/>
-            <Ellipse x:Name="StepPointer" Fill="#FFACC2C4" Height="9" Canvas.Left="28" Canvas.Top="289" Width="9"/>
-            <ComboBox Loaded="ComboBox_Loaded" SelectionChanged="ComboBox_SelectionChanged" Canvas.Left="45" Canvas.Top="665" Width="50"/>
-            <Label Content="Choose Map" Canvas.Left="25" Canvas.Top="623" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <CheckBox x:Name="ChkBasicStep" Content="Naked Single" Canvas.Left="45" Canvas.Top="341" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
+            <CheckBox x:Name="ChkNakedSingle" Content="Hidden Single" Canvas.Left="45" Canvas.Top="371" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsEnabled="False" IsChecked="True"/>
+            <CheckBox x:Name="ChkNakedPair" Content="Naked pair" Canvas.Left="45" Canvas.Top="401" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkNakedPair_Checked"/>
+            <CheckBox x:Name="ChkHiddenPair" Content="Hidden pair" Canvas.Left="45" Canvas.Top="431" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkHiddenPair_Checked"/>
+            <CheckBox x:Name="ChkPointingPair" Content="Pointing pair" Canvas.Left="45" Canvas.Top="461" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkPointingPair_Checked"/>
+            <CheckBox x:Name="ChkBoxLineReduuction" Content="Box line reduction" Canvas.Left="45" Canvas.Top="491" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkBoxLineReduuction_Checked"/>
+            <CheckBox x:Name="ChkXWing" Content="X-Wing" Canvas.Left="45" Canvas.Top="521" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkXWing_Checked"/>
+            <CheckBox x:Name="ChkRandomPick" Content="Random Pick" Canvas.Left="45" Canvas.Top="551" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkRandomPick_Checked"/>
+            <Label Content="Game strategies" Canvas.Left="25" Canvas.Top="297" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <CheckBox x:Name="ChkShowCandidates" Content="Show candidates" Canvas.Left="45" Canvas.Top="623" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="CheckBox_ShowCandidates"/>
+            <Label Content="Other options" Canvas.Left="25" Canvas.Top="581" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <CheckBox x:Name="ChkStopWatch" Content="Stopwatch" Canvas.Left="45" Canvas.Top="653" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True"/>
+            <Button Content="Take a step" Canvas.Left="25" Canvas.Top="251" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="Button_TakeOneStep"/>
+            <Button x:Name="AutoSolve" Content="Auto solve" Canvas.Left="166" Canvas.Top="251" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="AutoSolve_Click"/>
+            <Ellipse x:Name="StepPointer" Fill="#FFACC2C4" Height="9" Canvas.Left="28" Canvas.Top="349" Width="9"/>
+            <ComboBox Loaded="ComboBox_Loaded" SelectionChanged="ComboBox_SelectionChanged" Canvas.Left="45" Canvas.Top="125" Width="50"/>
+            <Label Content="Choose Map" Canvas.Left="25" Canvas.Top="83" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <Label Content="Solver" Canvas.Left="25" Canvas.Top="207" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
         </Canvas>
         <Label Content="1" Canvas.Left="379" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
         <Label Content="2" Canvas.Left="439" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
@@ -86,5 +86,12 @@
         <Label Content="I" Canvas.Left="327" Canvas.Top="594" FontSize="16" Foreground="#FF253D47"/>
         <Label Content="Steps: 0" Canvas.Left="359" Canvas.Top="648" Foreground="#FF626F70"/>
         <Label Content="00 : 00 : 00" Canvas.Left="756" Canvas.Top="648" Foreground="#FF626F70" Width="143" HorizontalContentAlignment="Right"/>
+        <Canvas x:Name="TheEnd" Height="659" Canvas.Left="300" Canvas.Top="41" Width="659" Background="#B2000000">
+            <Canvas x:Name="tePanel" Height="203" Width="331" Background="#FF3E606F" Canvas.Left="164" Canvas.Top="228">
+                <Label x:Name="teTitle" Content="Title" Canvas.Left="24" Canvas.Top="16" Width="283" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+                <TextBlock Canvas.Left="24" TextWrapping="Wrap" Canvas.Top="65" Height="68" Width="283" Foreground="#FFACC2C4"><Run Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"/><Run Language="hu-hu" Text="."/></TextBlock>
+                <Button x:Name="hideTheEnd" Content="Ok" Canvas.Left="110" Canvas.Top="138" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="hideTheEnd_Click"/>
+            </Canvas>
+        </Canvas>
     </Canvas>
 </Window>

@@ -73,7 +73,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\MapController.cs" />
     <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />

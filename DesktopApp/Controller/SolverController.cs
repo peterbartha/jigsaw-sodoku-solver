@@ -13,10 +13,12 @@ namespace DesktopApp.Controller
         private List<Heuristic> heuristics;
         private int actualId;
         private Table table;
+        private MainWindow window;
 
-        public SolverController(Table t)
+        public SolverController(Table t, MainWindow w)
         {
             this.table = t;
+            this.window = w;
             InitializeHeuristics();
             Actual = 0;
         }
@@ -37,6 +39,7 @@ namespace DesktopApp.Controller
         {
             if (heuristics.ElementAt(Actual).Apply())
             {
+                if (window.CheckGameState() != MainWindow.GameState.InGame) return;
                 Actual = 0;
                 return;
             }
@@ -56,11 +59,13 @@ namespace DesktopApp.Controller
         {
             foreach (var heuristic in heuristics)
             {
-                Actual = heuristics.IndexOf(heuristic) + 1;
+                Actual = heuristics.IndexOf(heuristic);
                 if (heuristic.Apply())
                 {
+                    if (window.CheckGameState() != MainWindow.GameState.InGame) return;
                     Actual = 0;
                     AutoSolve();
+                    break;
                 }
             }
         }
