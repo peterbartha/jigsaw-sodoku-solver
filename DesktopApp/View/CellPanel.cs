@@ -20,7 +20,7 @@ namespace DesktopApp.View
         private TextBlock number;
         private List<TextBlock> candidates;
         private Cell cell;
-        public readonly IList<string> backgrounds = new List<string> { "#b3d7e9", "#f4dda7", "#e4bdd4", "#b3e6dd", "#f5c0a6", "#b4e6cd", "#e9adad", "#c8c8c8", "#e3efb9" }.AsReadOnly();
+        public readonly IList<string> backgrounds = new List<string> { "#b3d7e9", "#f4dda7", "#e4bdd4", "#b3e6dd", "#f5c0a6", "#eeeeee", "#e9adad", "#c8c8c8", "#e3efb9" }.AsReadOnly();
 
         public CellPanel(Cell c, TableController tableCtrl)
         {
@@ -70,8 +70,7 @@ namespace DesktopApp.View
 
                 TextBlock candidate = new TextBlock();
                 candidate.Text = Convert.ToString(i + 1);
-                BrushConverter bc2 = new BrushConverter();
-                candidate.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
+                candidate.Foreground = (Brush)bc.ConvertFrom("#3e606f");
                 candidate.FontFamily = new FontFamily("Freestyle Script Regular");
                 candidate.FontSize = 20;
                 candidate.HorizontalAlignment = HorizontalAlignment.Center;
@@ -103,13 +102,12 @@ namespace DesktopApp.View
 
             number = new TextBlock();
             number.Text = cell.Value > 0 && cell.Value < 10 ? Convert.ToString(cell.Value) : "";
-            BrushConverter bc2 = new BrushConverter();
-            number.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
-            number.FontFamily = new FontFamily("Freestyle Script Regular");
-            number.FontSize = 38;
+            number.Foreground = cell.IsDefault ? (Brush)bc.ConvertFrom("#2e4853") : (Brush)bc.ConvertFrom("#3e606f");
+            number.FontFamily = cell.IsDefault ? new FontFamily("Calibri") : new FontFamily("Freestyle Script Regular");
+            number.FontSize = cell.IsDefault ? 32 : 40;
             number.HorizontalAlignment = HorizontalAlignment.Center;
             number.VerticalAlignment = VerticalAlignment.Center;
-            number.Padding = new Thickness(0);
+            number.Padding = cell.IsDefault ? new Thickness(0) : new Thickness(0, 2, 0, 0);
             
             border.Child = number;
             resultCanvas.Children.Add(border);
@@ -135,13 +133,12 @@ namespace DesktopApp.View
             field.Text = cell.Value > 0 ? Convert.ToString(cell.Value) : "";
             field.Background = field.BorderBrush = null;
             field.BorderThickness = new Thickness(0);
-            BrushConverter bc2 = new BrushConverter();
-            field.Foreground = (Brush)bc2.ConvertFrom("#3e606f");
+            field.Foreground = (Brush)bc.ConvertFrom("#3e606f");
             field.FontFamily = new FontFamily("Freestyle Script Regular");
-            field.FontSize = 38;
+            field.FontSize = 40;
             field.HorizontalAlignment = HorizontalAlignment.Center;
             field.VerticalAlignment = VerticalAlignment.Center;
-            field.Padding = new Thickness(0);
+            field.Padding = new Thickness(0, 2, 0, 0);
 
             border.Child = field;
             editCanvas.Children.Add(border);
@@ -153,26 +150,34 @@ namespace DesktopApp.View
         {
             if (e.Key == Key.Enter || e.Key == Key.Escape || e.Key == Key.Space)
             {
-                FieldChanged();
+                if (!cell.IsDefault) FieldChanged();
             }
         }
 
         private void LeftClickOnPanel(object sender, MouseButtonEventArgs e)
         {
-            candidateCanvas.Visibility = Visibility.Hidden;
-            resultCanvas.Visibility = Visibility.Hidden;
-            editCanvas.Visibility = Visibility.Visible;
-            field.Focus();
-            field.SelectAll();
+            if (!cell.IsDefault)
+            {
+                resultCanvas.Visibility = Visibility.Hidden;
+                editCanvas.Visibility = Visibility.Visible;
+                field.Focus();
+                field.SelectAll();
+                candidateCanvas.Visibility = Visibility.Hidden;
+            }
         }
 
         private void FieldLostFocus(object sender, RoutedEventArgs e)
         {
-            FieldChanged();
+            if (!cell.IsDefault) FieldChanged();
         }
 
         private void FieldChanged()
         {
+            if (!tableController.Stats.Cheating && !tableController.Stats.Timer.Enabled && tableController.Stats.TimerEnabled)
+                tableController.Stats.Timer.Start();
+
+            if (!tableController.Stats.Cheating) tableController.Stats.Steps++;
+
             int value;
             if (int.TryParse(field.Text, out value))
             {

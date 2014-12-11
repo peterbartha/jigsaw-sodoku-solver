@@ -15,6 +15,7 @@ namespace DesktopApp.Structure
         private int x;
         private int y;
         private CellPanel panel;
+        private Boolean isDefault;
 
 
 
@@ -69,6 +70,12 @@ namespace DesktopApp.Structure
         {
             get { return panel; }
             set { panel = value; }
+        }
+
+        public Boolean IsDefault
+        {
+            get { return isDefault; }
+            set { isDefault = value; }
         }
 
         public void RemoveCandidateIfExist(int element)

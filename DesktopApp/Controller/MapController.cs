@@ -33,6 +33,7 @@ namespace DesktopApp.Controller
                     if (int.TryParse(Convert.ToString(map[x + y * 9]), out value))
                     {
                         Cell cell = new Cell(x, y, value);
+                        cell.IsDefault = (value > 0);
                         row.Add(cell);
                     }
                 }

@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DesktopApp
 {
@@ -27,6 +29,7 @@ namespace DesktopApp
         TableController tableCtrl;
         MapController mapCtrl;
         SolverController solver;
+        StaticsController stats;
         public enum GameState { Ended, InGame, Fault }
         int statePointerTop;
 
@@ -49,10 +52,12 @@ namespace DesktopApp
 
         private void GenerateNewMap(int mapIndex)
         {
-            tableCtrl = new TableController(this);
+            stats = new StaticsController(this);
+            tableCtrl = new TableController(this, stats);
             mapCtrl = new MapController(tableCtrl, mapIndex);
             solver = new SolverController(tableCtrl.Table, this);
-            tableCtrl.ShowCandidates = true;
+
+            tableCtrl.ShowCandidates = false;
         }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)
@@ -70,12 +75,6 @@ namespace DesktopApp
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
-        }
-
-        private void Button_TakeOneStep(object sender, RoutedEventArgs e)
-        {
-            solver.TakeOneStep();
-            Canvas.SetTop(StepPointer, statePointerTop + 30 * solver.Actual);
         }
 
         private void ChkNakedPair_Checked(object sender, RoutedEventArgs e)
@@ -113,14 +112,42 @@ namespace DesktopApp
                 solver.Heuristics.ElementAt(7).Enabled = (Boolean)ChkRandomPick.IsChecked;
         }
 
-
+        private void Button_TakeOneStep(object sender, RoutedEventArgs e)
+        {
+            stats.Cheating = true;
+            var emptyBefore = CountEmptyCells();
+            solver.TakeOneStep();
+            var emptyAfter = CountEmptyCells();
+            stats.Steps += emptyBefore - emptyAfter;
+            Canvas.SetTop(StepPointer, statePointerTop + 30 * solver.Actual);
+        }
 
         private void AutoSolve_Click(object sender, RoutedEventArgs e)
         {
+            stats.Cheating = true;
             if (solver != null)
+            {
+                var emptyBefore = CountEmptyCells();
                 solver.AutoSolve();
+                var emptyAfter = CountEmptyCells();
+                stats.Steps += emptyBefore - emptyAfter;
+            }
         }
 
+        private int CountEmptyCells()
+        {
+            if (tableCtrl == null) return 0;
+
+            int count = 0;
+            foreach (var row in tableCtrl.Table.Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (cell.Value == 0) count++;
+                }
+            }
+            return count;
+        }
 
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -170,10 +197,23 @@ namespace DesktopApp
             //ComboBox_Loaded(sender, e);
         }
 
+        public void UpdateTimerLabelContent(string content)
+        {
+            this.Dispatcher.Invoke((Action)(() => { lblTimer.Content = content; }));
+        }
+
+        public void UpdateStepsCounterContent(int steps)
+        {
+            lblSteps.Content = "Steps: " + Convert.ToString(steps);
+        }
+
         private void CheckBox_ShowCandidates(object sender, RoutedEventArgs e)
         {
-            if (tableCtrl != null)
+            if (tableCtrl != null && stats != null)
+            {
                 tableCtrl.ShowCandidates = (Boolean)ChkShowCandidates.IsChecked;
+                stats.ShowedCandidates = (Boolean)ChkShowCandidates.IsChecked ? (Boolean)ChkShowCandidates.IsChecked : stats.ShowedCandidates;
+            }
         }
 
         public GameState CheckGameState()
@@ -222,6 +262,13 @@ namespace DesktopApp
         private void hideTheEnd_Click(object sender, RoutedEventArgs e)
         {
             TheEnd.Visibility = Visibility.Hidden;
+        }
+
+        private void ChkStopWatch_Checked(object sender, RoutedEventArgs e)
+        {
+            lblTimer.Visibility = (Boolean)ChkStopWatch.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            if (stats.Timer.Enabled) stats.Timer.Stop();
+            stats.TimerEnabled = (Boolean)ChkStopWatch.IsChecked;
         }
 
     }

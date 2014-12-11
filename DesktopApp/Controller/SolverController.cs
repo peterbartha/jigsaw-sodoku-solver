@@ -57,6 +57,7 @@ namespace DesktopApp.Controller
 
         public void AutoSolve()
         {
+            int steps = 0;
             foreach (var heuristic in heuristics)
             {
                 Actual = heuristics.IndexOf(heuristic);

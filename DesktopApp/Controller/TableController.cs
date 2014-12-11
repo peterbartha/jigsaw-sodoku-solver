@@ -16,11 +16,12 @@ namespace DesktopApp.Controller
         private Table table;
         private List<List<CellPanel>> cellPanels;
         private Boolean showCandidates;
-        
+        private StaticsController stats;
 
-        public TableController(MainWindow mainWindow)
+        public TableController(MainWindow mainWindow, StaticsController statsCont)
         {
             window = mainWindow;
+            stats = statsCont;
             InitializeTable();
         }
 
@@ -184,6 +185,11 @@ namespace DesktopApp.Controller
                     }
                 }
             }
+        }
+
+        public StaticsController Stats
+        {
+            get { return stats; }
         }
 
 
