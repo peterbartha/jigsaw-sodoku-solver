@@ -1,5 +1,6 @@
 ﻿using DesktopApp.Controller;
 using DesktopApp.Databases;
+using DesktopApp.MapEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,6 +140,34 @@ namespace DesktopApp
 
             string value = comboBox.SelectedItem as string;
             GenerateNewMap(Convert.ToInt32(value) - 1);
+        }
+
+        private void ComboBox_Type_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<Enum> mapData = new List<Enum>();
+            mapData.Add(MapEnums.Easy);
+            mapData.Add(MapEnums.Medium);
+            mapData.Add(MapEnums.Hard);
+            mapData.Add(MapEnums.Expert);
+            
+            var comboBox = sender as ComboBox;
+            comboBox.ItemsSource = mapData;
+            comboBox.SelectedIndex = 0;
+
+        }
+
+        private void ComboBox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+
+            Enum value = comboBox.SelectedItem as Enum;
+            if (value.Equals(MapEnums.Easy)) mapCtrl.LoadNewLevel(MapEnums.Easy);
+            if (value.Equals(MapEnums.Medium)) mapCtrl.LoadNewLevel(MapEnums.Medium);
+            if (value.Equals(MapEnums.Hard)) mapCtrl.LoadNewLevel(MapEnums.Hard);
+            if (value.Equals(MapEnums.Expert)) mapCtrl.LoadNewLevel(MapEnums.Expert);
+           // mapCtrl.LoadNewLevel((MapEnums)value);
+
+            //ComboBox_Loaded(sender, e);
         }
 
         private void CheckBox_ShowCandidates(object sender, RoutedEventArgs e)

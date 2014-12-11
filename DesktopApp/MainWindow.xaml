@@ -61,9 +61,11 @@
             <Button Content="Take a step" Canvas.Left="25" Canvas.Top="251" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="Button_TakeOneStep"/>
             <Button x:Name="AutoSolve" Content="Auto solve" Canvas.Left="166" Canvas.Top="251" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="AutoSolve_Click"/>
             <Ellipse x:Name="StepPointer" Fill="#FFACC2C4" Height="9" Canvas.Left="28" Canvas.Top="349" Width="9"/>
-            <ComboBox Loaded="ComboBox_Loaded" SelectionChanged="ComboBox_SelectionChanged" Canvas.Left="45" Canvas.Top="125" Width="50"/>
-            <Label Content="Choose Map" Canvas.Left="25" Canvas.Top="83" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <ComboBox Loaded="ComboBox_Loaded" SelectionChanged="ComboBox_SelectionChanged" Canvas.Left="227" Canvas.Top="127" Width="50" RenderTransformOrigin="0.144,0.429"/>
+            <Label Content="Choose Map" Canvas.Left="167" Canvas.Top="85" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
             <Label Content="Solver" Canvas.Left="25" Canvas.Top="207" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <Label Content="Choose Level" Canvas.Left="15" Canvas.Top="85" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
+            <ComboBox Loaded="ComboBox_Type_Loaded" SelectionChanged="ComboBox_Type_SelectionChanged" Canvas.Left="15" Canvas.Top="127" Width="120"/>
         </Canvas>
         <Label Content="1" Canvas.Left="379" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
         <Label Content="2" Canvas.Left="439" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>

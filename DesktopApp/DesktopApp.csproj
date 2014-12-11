@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controller\MapController.cs" />
+    <Compile Include="MapEnum\MapEnums.cs" />
     <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />
     <Compile Include="Databases\MapData.cs" />

@@ -1,5 +1,6 @@
 ﻿using DesktopApp.Structure;
 using DesktopApp.Databases;
+using DesktopApp.MapEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,11 @@ namespace DesktopApp.Controller
                 }
             }
             return boxes;
+        }
+
+        public void LoadNewLevel(MapEnums newMap)
+        {
+            mapData.LoadMapLevel(newMap);
         }
 
         public void GenerateMap(int index)
