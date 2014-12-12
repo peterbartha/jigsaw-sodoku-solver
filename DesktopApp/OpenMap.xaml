@@ -19,12 +19,12 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Label Content="Map name" Canvas.Left="11" Canvas.Top="9" Width="200" Foreground="#FF253D47"/>
+            <Label Content="Table name" Canvas.Left="11" Canvas.Top="9" Width="200" Foreground="#FF253D47"/>
             <Label Content="Difficulty" Canvas.Left="213" Canvas.Top="9" Width="200" Foreground="#FF253D47"/>
-            <Button x:Name="btnOpenMap" Content="Open Map" Canvas.Left="489" Canvas.Top="10" Width="110" Height="25" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" RenderTransformOrigin="4.573,-2.774" Click="btnOpenMap_Click"/>
+            <Button x:Name="btnOpenMap" Content="Open Table" Canvas.Left="489" Canvas.Top="10" Width="110" Height="25" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" RenderTransformOrigin="4.573,-2.774" Click="btnOpenMap_Click"/>
         </Canvas>
         <Image x:Name="logoImg" Height="50" Canvas.Left="15" Canvas.Top="15" Width="50" Source="Resources/header_logo.png"/>
-        <Label Content="Open map" Canvas.Left="82" Canvas.Top="32" Width="157" Foreground="#FFB3D7E9" FontSize="18" FontFamily="Segoe UI Light"/>
+        <Label Content="Open table" Canvas.Left="82" Canvas.Top="32" Width="157" Foreground="#FFB3D7E9" FontSize="18" FontFamily="Segoe UI Light"/>
         <Image x:Name="exitIcon" Height="12" Canvas.Left="587" Canvas.Top="10" Width="12" Source="Resources/quit.png" Cursor="Hand"/>
     </Canvas>
 </Window>

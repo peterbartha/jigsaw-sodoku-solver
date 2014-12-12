@@ -58,13 +58,13 @@
             <CheckBox x:Name="ChkShowCandidates" Content="Show candidates" Canvas.Left="45" Canvas.Top="623" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" Click="CheckBox_ShowCandidates"/>
             <Label Content="Other options" Canvas.Left="25" Canvas.Top="581" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
             <CheckBox x:Name="ChkStopWatch" Content="Stopwatch" Canvas.Left="45" Canvas.Top="653" Height="25" Width="175" FontSize="16" VerticalContentAlignment="Center" Padding="8,-1,0,0" Background="#FFC1E0FF" BorderBrush="#FFB3D7E9" Foreground="#FFB3D7E9" IsChecked="True" Click="ChkStopWatch_Checked"/>
-            <Button x:Name="btnOpenMap" Content="Open Map" Canvas.Left="25" Canvas.Top="134" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" RenderTransformOrigin="0.509,0.516" Click="btnOpenMap_Click"/>
+            <Button x:Name="btnOpenMap" Content="Open Table" Canvas.Left="25" Canvas.Top="134" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" RenderTransformOrigin="0.509,0.516" Click="btnOpenMap_Click"/>
             <Button Content="Take a step" Canvas.Left="25" Canvas.Top="255" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="Button_TakeOneStep"/>
             <Button x:Name="AutoSolve" Content="Auto solve" Canvas.Left="166" Canvas.Top="255" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="AutoSolve_Click"/>
             <Ellipse x:Name="StepPointer" Fill="#FFACC2C4" Height="9" Canvas.Left="28" Canvas.Top="349" Width="9"/>
             <Label Content="Solver" Canvas.Left="25" Canvas.Top="211" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
             <Label Content="New Game" Canvas.Left="25" Canvas.Top="92" Width="130" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
-            <Label x:Name="lblActualMap" Content="Actual map:" Canvas.Left="25" Canvas.Top="175" Width="251" Foreground="#FFACC2C4"/>
+            <Label x:Name="lblActualMap" Content="Actual table:" Canvas.Left="25" Canvas.Top="175" Width="251" Foreground="#FFACC2C4"/>
         </Canvas>
         <Label Content="1" Canvas.Left="379" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
         <Label Content="2" Canvas.Left="439" Canvas.Top="61" FontSize="16" Foreground="#FF253D47"/>
