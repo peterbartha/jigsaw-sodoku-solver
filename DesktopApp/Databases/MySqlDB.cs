@@ -50,6 +50,7 @@ namespace DesktopApp.Databases
             try
             {
                 connection.Close();
+                isOpened = false;
                 return true;
             }
             catch (MySqlException ex)

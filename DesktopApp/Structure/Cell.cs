@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DesktopApp.Structure
 {
-    class Cell
+    public class Cell
     {
         private Box box;
         private List<int> candidates;
