@@ -37,7 +37,7 @@
             </Canvas.Effect>
             <Canvas x:Name="titleBar" Height="40" Width="657" Background="#FF8DA1A2" Canvas.Left="301">
                 <Image Height="20" Canvas.Left="10" Canvas.Top="11" Width="20" Source="pack://application:,,,/Resources/user_icon.png"/>
-                <Label x:Name="lblUsername" Content="Peter Bartha" Canvas.Left="31" Canvas.Top="5" Width="249" FontSize="16" Foreground="#FF253D47"/>
+                <Label x:Name="lblUsername" Content="Peter Bartha" Canvas.Left="31" Canvas.Top="5" FontSize="16" Foreground="#FF253D47" Cursor="Hand"/>
                 <Image x:Name="exitIcon" Height="12" Canvas.Left="632" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/quit.png" Cursor="Hand"/>
                 <Image x:Name="minimalIcon" Height="12" Canvas.Left="611" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/minimal.png" Cursor="Hand"/>
             </Canvas>
@@ -93,6 +93,10 @@
                 <TextBlock x:Name="lblDesc" Canvas.Left="24" TextWrapping="Wrap" Canvas.Top="65" Height="88" Width="283" Foreground="#FFACC2C4"><Run Language="hu-hu" Text="Steps: "/><LineBreak/><Run Language="hu-hu" Text="Canidates showed: "/><LineBreak/><Run Language="hu-hu" Text="Time: "/><LineBreak/><Run Language="hu-hu" Text="Points: "/><LineBreak/><Run Language="hu-hu" Text="Solver used: "/></TextBlock>
                 <Button x:Name="hideTheEnd" Content="Ok" Canvas.Left="110" Canvas.Top="164" Width="110" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" FontFamily="Segoe UI Semibold" Click="hideTheEnd_Click"/>
             </Canvas>
+        </Canvas>
+        <Canvas x:Name="statsPanel" Height="123" Canvas.Left="338" Canvas.Top="34" Width="231" Background="#FF3E606F" Visibility="Hidden">
+            <TextBlock Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="13" Height="103" Width="107" Foreground="#FFACC2C4"><Run Language="hu-hu" Text="Played games:"/><LineBreak/><Run Language="hu-hu" Text="Steps: "/><LineBreak/><Run Language="hu-hu" Text="Canidates showed: "/><LineBreak/><Run Language="hu-hu" Text="All time: "/><LineBreak/><Run Language="hu-hu" Text="Points: "/><LineBreak/><Run Language="hu-hu" Text="Solver used: "/></TextBlock>
+            <TextBlock x:Name="lblStatValues" Canvas.Left="122" TextWrapping="Wrap" Canvas.Top="13" Height="103" Width="99" Foreground="#FFACC2C4"><Run Language="hu-hu" Text="10"/><LineBreak/><Run Language="hu-hu" Text="10"/><LineBreak/><Run Language="hu-hu" Text="15 times"/><LineBreak/><Run Language="hu-hu" Text="00 : 00 : 00"/><LineBreak/><Run Language="hu-hu" Text="6261"/><LineBreak/><Run Language="hu-hu" Text="6 times"/></TextBlock>
         </Canvas>
     </Canvas>
 </Window>

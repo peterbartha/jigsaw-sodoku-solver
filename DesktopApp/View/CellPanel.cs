@@ -210,6 +210,8 @@ namespace DesktopApp.View
                 cell.Value = value;
                 number.Text = Convert.ToString(cell.Value);
                 tableController.MakeCandidatesForTableCells();
+
+                if (tableController.CountEmptyCells() == 0) tableController.CheckGameState();
             }
         }
 
