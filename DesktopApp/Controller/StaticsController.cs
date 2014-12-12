@@ -120,10 +120,11 @@ namespace DesktopApp.Controller
             string content = "";
             if (db.OpenConnection())
             {
-                using (var com = new MySqlCommand("SELECT SUM(`Steps`) as SumSteps, SUM(`Candidates`) as SumCandidates, SUM(`Cheating`) as SumCheating, SUM(`Time`) as SumTime, SUM(`Points`) as SumPoints, COUNT(`UserId`) as SumGames FROM peterbartha.solutions;", db.Connection))
+                using (var com = new MySqlCommand("SELECT SUM(`Steps`) as SumSteps, SUM(`Candidates`) as SumCandidates, SUM(`Cheating`) as SumCheating, SUM(`Time`) as SumTime, SUM(`Points`) as SumPoints, COUNT(`UserId`) as SumGames FROM peterbartha.solutions WHERE UserId=@uid;", db.Connection))
                 {
                     try
                     {
+                        com.Parameters.Add(new MySqlParameter("@uid", User.Id));
                         var reader = com.ExecuteReader();
 
                         if (reader.HasRows)
