@@ -1,6 +1,5 @@
 ﻿using DesktopApp.Databases;
 using DesktopApp.Structure;
-using Facebook;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -24,9 +23,6 @@ namespace DesktopApp
     /// </summary>
     public partial class Login : Window
     {
-        private const string AppId = "977023372311996";
-        private const string ExtendedPermissions = "email";
-        private string _accessToken;
         private MySqlDB db;
 
         public Login()
@@ -99,65 +95,6 @@ namespace DesktopApp
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             CheckCredentials();
-        }
-
-        private void facebookLogin_Click(object sender, RoutedEventArgs e)
-        {
-            var fbLoginDialog = new FacebookLoginDialog(AppId, ExtendedPermissions);
-            fbLoginDialog.ShowDialog();
-
-            DisplayAppropriateMessage(fbLoginDialog.FacebookOAuthResult);
-        }
-
-        private void DisplayAppropriateMessage(FacebookOAuthResult facebookOAuthResult)
-        {
-            if (facebookOAuthResult != null)
-            {
-                if (facebookOAuthResult.IsSuccess)
-                {
-                    _accessToken = facebookOAuthResult.AccessToken;
-                    var fb = new FacebookClient(facebookOAuthResult.AccessToken);
-
-                    dynamic result = fb.Get("/me");
-                    string email = Convert.ToString(result.email);
-
-                    if (db.OpenConnection())
-                    {
-                        using (var com = new MySqlCommand("SELECT * FROM Users WHERE Email=@email", db.Connection))
-                        {
-                            try
-                            {
-                                com.Parameters.Add(new MySqlParameter("@email", email));
-                                var reader = com.ExecuteReader();
-
-                                if (reader.HasRows)
-                                {
-                                    while (reader.Read())
-                                    {
-                                        var user = new LoggedInUser(reader.GetInt32("Id"), reader["Username"].ToString(), email);
-                                        var mainWindow = new MainWindow(user); // user
-                                        mainWindow.Show();
-                                        this.Hide();
-                                    }
-                                }
-
-                            }
-                            catch (Exception exception)
-                            {
-                                MessageBox.Show("Error happend: Could not login. (" + exception.Message + ")");
-                            }
-                            finally
-                            {
-                                db.CloseConnection();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(facebookOAuthResult.ErrorDescription);
-                }
-            }
         }
 
         private void registerButton_Click(object sender, RoutedEventArgs e)
