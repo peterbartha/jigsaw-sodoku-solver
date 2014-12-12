@@ -88,10 +88,15 @@ namespace DesktopApp
                 }
             }
 
+            if (db.Connection.State != System.Data.ConnectionState.Closed)
+                db.CloseConnection();
+
             MessageBox.Show("Sucessfully registered.");
             this.caller.setUserField(strUser);
             this.caller.Show();
             this.Hide();
+
+
         }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)

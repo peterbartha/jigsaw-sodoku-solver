@@ -87,7 +87,6 @@
     <Compile Include="MapEnum\MapEnums.cs" />
     <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />
-    <Compile Include="Databases\MapData.cs" />
     <Compile Include="Heuristics\BoxLineReduction.cs" />
     <Compile Include="Heuristics\Heuristic.cs" />
     <Compile Include="Heuristics\HiddenPair.cs" />
@@ -97,6 +96,9 @@
     <Compile Include="Heuristics\PointingPair.cs" />
     <Compile Include="Heuristics\RandomPick.cs" />
     <Compile Include="Heuristics\XWing.cs" />
+    <Compile Include="OpenMap.xaml.cs">
+      <DependentUpon>OpenMap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
@@ -123,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OpenMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Register.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

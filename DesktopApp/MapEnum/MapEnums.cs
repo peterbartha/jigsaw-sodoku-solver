@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace DesktopApp.MapEnum
 {
-    public enum MapEnums
+    public enum Difficulty
     {
-        Easy = 0,
-        Medium = 1,
-        Hard = 2,
-        Expert = 3
+        Easy, Medium, Hard, Expert
     };
 }

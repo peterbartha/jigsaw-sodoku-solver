@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DesktopApp.Structure
 {
-    class Table
+    public class Table
     {
         private List<List<Cell>> cells;
         private List<Box> boxes;

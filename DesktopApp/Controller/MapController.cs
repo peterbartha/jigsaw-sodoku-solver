@@ -6,18 +6,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using System.Windows;
 namespace DesktopApp.Controller
 {
-    class MapController
+    public class MapController
     {
+        private MainWindow mainWindow;
+        private StaticsController statCtrl;
         private TableController tableController;
-        public MapData mapData;
+        private List<Problem> maps;
+        private Problem map;
+        private MySqlDB db;
 
-        public MapController(TableController tableCtrl, int index)
+
+        public MapController(TableController tableCtrl, MainWindow mw, StaticsController sctrl)
         {
+            mainWindow = mw;
+            statCtrl = sctrl;
             tableController = tableCtrl;
-            mapData = new MapData();
-            GenerateMap(index);
+
+            maps = new List<Problem>();
+            db = new MySqlDB();
+
+            LoadMapsFromDB();
+
+            GenerateMap(maps.ElementAt(0));
+        }
+
+        public void LoadMapsFromDB()
+        {
+            if (db.OpenConnection())
+            {
+                using (var com = new MySqlCommand("SELECT * FROM Maps", db.Connection))
+                {
+                    try
+                    {
+                        var reader = com.ExecuteReader();
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var problem = new Problem();
+
+                                problem.Id = int.Parse(reader["Id"].ToString());
+                                problem.AuthorId = int.Parse(reader["AuthorId"].ToString());
+                                problem.Name = reader["Name"].ToString();
+                                problem.IsPublic = reader["IsPublic"].ToString() == "1";
+                                problem.Map = reader["Map"].ToString();
+                                problem.Box = reader["Boxes"].ToString();
+                                problem.Difficulty = (Difficulty)System.Enum.Parse(typeof(Difficulty), reader["Difficulty"].ToString());
+
+                                maps.Add(problem);
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show("Error happend: Could not read group list. (" + exception.Message + ")");
+                    }
+                    finally
+                    {
+                        db.CloseConnection();
+                    }
+                }
+            }
         }
 
         private List<List<Cell>> ParseMap(String map)
@@ -68,16 +122,26 @@ namespace DesktopApp.Controller
             return boxes;
         }
 
-        public void LoadNewLevel(MapEnums newMap)
+        public void GenerateMap(Problem problem)
         {
-            mapData.LoadMapLevel(newMap);
+            map = problem;
+            tableController.Table.Cells = ParseMap(problem.Map);
+            tableController.Table.Boxes = ParseBox(problem.Box);
+            tableController.RenderTable();
+            mainWindow.SetActualMapName(problem.Name);
+            statCtrl.CreateNewStat();
+            mainWindow.TheEnd.Visibility = Visibility.Hidden;
         }
 
-        public void GenerateMap(int index)
+        public Problem Map
         {
-            tableController.Table.Cells = ParseMap(mapData.GetMapByIndex(index));
-            tableController.Table.Boxes = ParseBox(mapData.GetBoxByIndex(index));
-            tableController.RenderTable();
+            get { return map; }
+            set { map = value; }
+        }
+        public List<Problem> Problems
+        {
+            get { return maps; }
+            set { maps = value; }
         }
     }
 }

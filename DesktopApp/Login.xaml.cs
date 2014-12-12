@@ -40,6 +40,7 @@ namespace DesktopApp
             bool hasError = false;
             String strUser = usernameTxt.Text;
             String strPass = passwordTxt.Password;
+            MySqlDataReader reader = null;
 
             if (db.OpenConnection())
             {
@@ -48,7 +49,7 @@ namespace DesktopApp
                     try
                     {
                         com.Parameters.Add(new MySqlParameter("@email", strUser));
-                        var reader = com.ExecuteReader();
+                        reader = com.ExecuteReader();
 
                         if (reader.HasRows)
                         {
@@ -81,10 +82,14 @@ namespace DesktopApp
                     }
                     finally
                     {
+                        if (reader != null) reader.Close();
                         db.CloseConnection();
                     }
                 }
             }
+
+            if (db.Connection.State != System.Data.ConnectionState.Closed)
+                db.CloseConnection();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

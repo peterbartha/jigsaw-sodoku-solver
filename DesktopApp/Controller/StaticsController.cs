@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace DesktopApp.Controller
 {
-    class StaticsController
+    public class StaticsController
     {
         private MainWindow mainWindow;
         private Timer timer;
@@ -41,6 +41,19 @@ namespace DesktopApp.Controller
             mainWindow.UpdateTimerLabelContent(formatedTime);
         }
 
+        public void CreateNewStat()
+        {
+            if (elapsedMilis > 0 || steps > 0)
+            {
+                // TODO
+            }
+
+            timer.Stop();
+            elapsedMilis = 0;
+            mainWindow.UpdateTimerLabelContent("00 : 00 : 00");
+            Steps = 0;
+            Cheating = false;
+        }
 
         /**
          * Getter/Setter

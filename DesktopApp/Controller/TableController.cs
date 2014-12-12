@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace DesktopApp.Controller
 {
-    class TableController
+    public class TableController
     {
         private MainWindow window;
         private Table table;
@@ -40,6 +40,7 @@ namespace DesktopApp.Controller
 
         public void CreateCellPanels()
         {
+            ClearCellPanels();
             foreach (var row in table.Cells)
             {
                 List<CellPanel> cellPanelRow = new List<CellPanel>();
@@ -67,6 +68,12 @@ namespace DesktopApp.Controller
                 }
             }
         }
+
+        private void ClearCellPanels()
+        {
+            cellPanels.Clear();
+        }
+
         private void ClearTable()
         {
             if (window.CellGrid.Children.Count > 0)

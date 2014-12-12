@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace DesktopApp.View
 {
-    class CellPanel : Panel
+    public class CellPanel : Panel
     {
         private TableController tableController;
         private Canvas candidateCanvas, resultCanvas, editCanvas;

@@ -8,11 +8,11 @@
             <Label Content="Jigsaw Sudoku" Canvas.Left="126" Canvas.Top="49" Width="135" Foreground="#FFE3EFB9" FontSize="18" FontFamily="Segoe UI Semibold"/>
             <Label Content="Solver" Canvas.Left="250" Canvas.Top="49" Width="81" Foreground="#FFB3D7E9" FontSize="18" FontFamily="Segoe UI Light"/>
             <Canvas Height="366" Canvas.Top="122" Width="375" Background="#FF3E606F">
-                <TextBox x:Name="emailTxt" Height="30" Canvas.Left="30" TextWrapping="Wrap" Canvas.Top="104" Width="315" FontSize="14" VerticalContentAlignment="Center" Background="#FFACC2C4" BorderBrush="#FF253D47"/>
-                <Button x:Name="registerBtn" Content="Register" Canvas.Left="127" Canvas.Top="287" Width="120" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="registerButton_Click"/>
-                <Label x:Name="backLabel" Content="Back" Canvas.Left="168" Canvas.Top="330" Foreground="#FF253D47" FontWeight="Bold" Cursor="Hand"/>
-                <PasswordBox x:Name="passwordTxt" Canvas.Left="30" Canvas.Top="167" Width="315" Height="30" Background="#FFACC2C4" BorderBrush="#FF253D47" VerticalContentAlignment="Center" FontSize="14"/>
-                <PasswordBox x:Name="rePasswordTxt" Canvas.Left="30" Canvas.Top="230" Width="315" Height="30" Background="#FFACC2C4" BorderBrush="#FF253D47" VerticalContentAlignment="Center" FontSize="14"/>
+                <TextBox x:Name="emailTxt" Height="30" Canvas.Left="30" TextWrapping="Wrap" Canvas.Top="104" Width="315" FontSize="14" VerticalContentAlignment="Center" Background="#FFACC2C4" BorderBrush="#FF253D47" TabIndex="1"/>
+                <Button x:Name="registerBtn" Content="Register" Canvas.Left="127" Canvas.Top="287" Width="120" Height="31" Background="#FFACC2C4" BorderBrush="#FF8DA1A2" Foreground="#FF3E606F" FontSize="14" Click="registerButton_Click" TabIndex="4"/>
+                <Label x:Name="backLabel" Content="Back" Canvas.Left="168" Canvas.Top="330" Foreground="#FF253D47" FontWeight="Bold" Cursor="Hand" TabIndex="5"/>
+                <PasswordBox x:Name="passwordTxt" Canvas.Left="30" Canvas.Top="167" Width="315" Height="30" Background="#FFACC2C4" BorderBrush="#FF253D47" VerticalContentAlignment="Center" FontSize="14" TabIndex="2"/>
+                <PasswordBox x:Name="rePasswordTxt" Canvas.Left="30" Canvas.Top="230" Width="315" Height="30" Background="#FFACC2C4" BorderBrush="#FF253D47" VerticalContentAlignment="Center" FontSize="14" TabIndex="3"/>
             </Canvas>
             <Label Content="Register" Canvas.Left="29" Canvas.Top="145" Width="204" FontSize="20" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>
             <Label Content="Email" Canvas.Left="30" Canvas.Top="195" Width="204" Padding="0,5,5,5" Foreground="#FF1D333C" FontFamily="Segoe UI Semibold"/>

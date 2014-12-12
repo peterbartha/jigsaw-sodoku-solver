@@ -38,7 +38,7 @@ namespace DesktopApp
         public MainWindow(LoggedInUser lu)
         {
             InitializeComponent();
-            GenerateNewMap(0);
+            GenerateNewMap();
 
             user = lu;
             SetUpUserDetails();
@@ -55,11 +55,11 @@ namespace DesktopApp
             minimalIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Minimal);
         }
 
-        private void GenerateNewMap(int mapIndex)
+        private void GenerateNewMap()
         {
             stats = new StaticsController(this);
             tableCtrl = new TableController(this, stats);
-            mapCtrl = new MapController(tableCtrl, mapIndex);
+            mapCtrl = new MapController(tableCtrl, this, stats);
             solver = new SolverController(tableCtrl.Table, this);
 
             tableCtrl.ShowCandidates = false;
@@ -68,6 +68,11 @@ namespace DesktopApp
         private void SetUpUserDetails()
         {
             lblUsername.Content = user.Username == "" ? user.Email : user.Username;
+        }
+
+        public void SetActualMapName(string name)
+        {
+            lblActualMap.Content = "Actual map: " + name;
         }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)
@@ -160,54 +165,6 @@ namespace DesktopApp
             return count;
         }
 
-        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            List<string> data = new List<string>();
-            for (int i = 0; i < mapCtrl.mapData.GetMapCount(); i++)
-                data.Add((i+1).ToString());
-
-            var comboBox = sender as ComboBox;
-            comboBox.ItemsSource = data;
-            comboBox.SelectedIndex = 0;
-
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var comboBox = sender as ComboBox;
-
-            string value = comboBox.SelectedItem as string;
-            GenerateNewMap(Convert.ToInt32(value) - 1);
-        }
-
-        private void ComboBox_Type_Loaded(object sender, RoutedEventArgs e)
-        {
-            List<Enum> mapData = new List<Enum>();
-            mapData.Add(MapEnums.Easy);
-            mapData.Add(MapEnums.Medium);
-            mapData.Add(MapEnums.Hard);
-            mapData.Add(MapEnums.Expert);
-            
-            var comboBox = sender as ComboBox;
-            comboBox.ItemsSource = mapData;
-            comboBox.SelectedIndex = 0;
-
-        }
-
-        private void ComboBox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var comboBox = sender as ComboBox;
-
-            Enum value = comboBox.SelectedItem as Enum;
-            if (value.Equals(MapEnums.Easy)) mapCtrl.LoadNewLevel(MapEnums.Easy);
-            if (value.Equals(MapEnums.Medium)) mapCtrl.LoadNewLevel(MapEnums.Medium);
-            if (value.Equals(MapEnums.Hard)) mapCtrl.LoadNewLevel(MapEnums.Hard);
-            if (value.Equals(MapEnums.Expert)) mapCtrl.LoadNewLevel(MapEnums.Expert);
-           // mapCtrl.LoadNewLevel((MapEnums)value);
-
-            //ComboBox_Loaded(sender, e);
-        }
-
         public void UpdateTimerLabelContent(string content)
         {
             this.Dispatcher.Invoke((Action)(() => { lblTimer.Content = content; }));
@@ -261,12 +218,14 @@ namespace DesktopApp
         private void ShowErrorPanel()
         {
             teTitle.Content = "Error";
+            lblDesc.Text = "Wrong solution.\r\nPlease check the numbers.";
             TheEnd.Visibility = Visibility.Visible;
         }
 
         private void ShowSuccessPanel()
         {
             teTitle.Content = "Success";
+            lblDesc.Text = "Steps: " + stats.Steps.ToString() + "\r\nCanidates showed: " + stats.ShowedCandidates.ToString() + "\r\nTime: " + lblTimer.Content + "\r\nPoints: \r\nSolver used: " + stats.Cheating.ToString() + "\r\n";
             TheEnd.Visibility = Visibility.Visible;
         }
 
@@ -280,6 +239,12 @@ namespace DesktopApp
             lblTimer.Visibility = (Boolean)ChkStopWatch.IsChecked ? Visibility.Visible : Visibility.Hidden;
             if (stats.Timer.Enabled) stats.Timer.Stop();
             stats.TimerEnabled = (Boolean)ChkStopWatch.IsChecked;
+        }
+
+        private void btnOpenMap_Click(object sender, RoutedEventArgs e)
+        {
+            var mapWindow = new OpenMap(mapCtrl);
+            mapWindow.Show();
         }
 
     }
