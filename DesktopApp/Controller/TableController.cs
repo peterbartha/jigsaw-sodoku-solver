@@ -91,6 +91,24 @@ namespace DesktopApp.Controller
             }
         }
 
+        public int CountEmptyCells()
+        {
+            int count = 0;
+            foreach (var row in Table.Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (cell.Value == 0) count++;
+                }
+            }
+            return count;
+        }
+
+        public void CheckGameState()
+        {
+            window.CheckGameState();
+        }
+
        
         public bool CheckTable()
         {

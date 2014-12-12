@@ -53,6 +53,13 @@ namespace DesktopApp
 
             exitIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Exit);
             minimalIcon.MouseLeftButtonDown += new MouseButtonEventHandler(Window_Minimal);
+
+            lblUsername.MouseEnter += new MouseEventHandler(Name_Enter);
+            statsPanel.MouseEnter += new MouseEventHandler(Name_Enter);
+            lblUsername.MouseLeave += new MouseEventHandler(Name_Leave);
+            statsPanel.MouseLeave += new MouseEventHandler(Name_Leave);
+
+            stats.GetGlobalStats();
         }
 
         private void GenerateNewMap()
@@ -68,11 +75,26 @@ namespace DesktopApp
         private void SetUpUserDetails()
         {
             lblUsername.Content = user.Username == "" ? user.Email : user.Username;
+            stats.User = user;
+        }
+
+        public void SetUpStatPanelContent(string content)
+        {
+            lblStatValues.Text = content;
         }
 
         public void SetActualMapName(string name)
         {
             lblActualMap.Content = "Actual map: " + name;
+        }
+
+        private void Name_Enter(object sender, MouseEventArgs e)
+        {
+            statsPanel.Visibility = Visibility.Visible;
+        }
+        private void Name_Leave(object sender, MouseEventArgs e)
+        {
+            statsPanel.Visibility = Visibility.Hidden;
         }
 
         private void Window_Exit(object sender, MouseButtonEventArgs e)
@@ -131,9 +153,9 @@ namespace DesktopApp
         private void Button_TakeOneStep(object sender, RoutedEventArgs e)
         {
             stats.Cheating = true;
-            var emptyBefore = CountEmptyCells();
+            var emptyBefore = tableCtrl.CountEmptyCells();
             solver.TakeOneStep();
-            var emptyAfter = CountEmptyCells();
+            var emptyAfter = tableCtrl.CountEmptyCells();
             stats.Steps += emptyBefore - emptyAfter;
             Canvas.SetTop(StepPointer, statePointerTop + 30 * solver.Actual);
         }
@@ -143,27 +165,14 @@ namespace DesktopApp
             stats.Cheating = true;
             if (solver != null)
             {
-                var emptyBefore = CountEmptyCells();
+                var emptyBefore = tableCtrl.CountEmptyCells();
                 solver.AutoSolve();
-                var emptyAfter = CountEmptyCells();
+                var emptyAfter = tableCtrl.CountEmptyCells();
                 stats.Steps += emptyBefore - emptyAfter;
             }
         }
 
-        private int CountEmptyCells()
-        {
-            if (tableCtrl == null) return 0;
 
-            int count = 0;
-            foreach (var row in tableCtrl.Table.Cells)
-            {
-                foreach (var cell in row)
-                {
-                    if (cell.Value == 0) count++;
-                }
-            }
-            return count;
-        }
 
         public void UpdateTimerLabelContent(string content)
         {
@@ -211,6 +220,12 @@ namespace DesktopApp
             }
             else if (empty > 0) return GameState.InGame;
 
+            if (!tableCtrl.CheckTable())
+            {
+                ShowErrorPanel();
+                return GameState.Fault;
+            }
+
             ShowSuccessPanel();
             return GameState.Ended;
         }
@@ -218,19 +233,21 @@ namespace DesktopApp
         private void ShowErrorPanel()
         {
             teTitle.Content = "Error";
-            lblDesc.Text = "Wrong solution.\r\nPlease check the numbers.";
+            lblDesc.Text = "\r\nWrong solution.\r\nPlease check the numbers.";
             TheEnd.Visibility = Visibility.Visible;
         }
 
         private void ShowSuccessPanel()
         {
+            stats.GameEnded(mapCtrl.Map);
             teTitle.Content = "Success";
-            lblDesc.Text = "Steps: " + stats.Steps.ToString() + "\r\nCanidates showed: " + stats.ShowedCandidates.ToString() + "\r\nTime: " + lblTimer.Content + "\r\nPoints: \r\nSolver used: " + stats.Cheating.ToString() + "\r\n";
+            lblDesc.Text = "Steps: " + stats.Steps.ToString() + "\r\nCanidates showed: " + stats.ShowedCandidates.ToString() + "\r\nTime: " + lblTimer.Content + "\r\nPoints: " + stats.Points.ToString() + "\r\nSolver used: " + stats.Cheating.ToString() + "\r\n";
             TheEnd.Visibility = Visibility.Visible;
         }
 
         private void hideTheEnd_Click(object sender, RoutedEventArgs e)
         {
+            stats.CreateNewStat();
             TheEnd.Visibility = Visibility.Hidden;
         }
 
