@@ -53,6 +53,13 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>packages\Facebook.7.0.0-alpha\lib\net45\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\MySql.Data.6.9.5\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -75,6 +82,14 @@
     </ApplicationDefinition>
     <Compile Include="Controller\MapController.cs" />
     <Compile Include="Controller\StaticsController.cs" />
+    <Compile Include="Databases\MySqlDB.cs" />
+    <Compile Include="FacebookLoginDialog.xaml.cs">
+      <DependentUpon>FacebookLoginDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Hash\PasswordHash.cs" />
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapEnum\MapEnums.cs" />
     <Compile Include="Controller\SolverController.cs" />
     <Compile Include="Controller\TableController.cs" />
@@ -88,10 +103,22 @@
     <Compile Include="Heuristics\PointingPair.cs" />
     <Compile Include="Heuristics\RandomPick.cs" />
     <Compile Include="Heuristics\XWing.cs" />
+    <Compile Include="Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Structure\Box.cs" />
     <Compile Include="Structure\Cell.cs" />
+    <Compile Include="Structure\LoggedInUser.cs" />
     <Compile Include="Structure\Problem.cs" />
     <Compile Include="Structure\Table.cs" />
+    <Page Include="FacebookLoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +133,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Register.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -125,6 +156,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

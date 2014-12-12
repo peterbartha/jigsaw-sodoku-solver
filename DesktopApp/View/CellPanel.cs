@@ -188,6 +188,7 @@ namespace DesktopApp.View
             else if (field.Text == "")
             {
                 EditCellValue(0);
+                number.Text = Convert.ToString("");
                 //if (cell.Value > 0 && cell.Value <= 9) EditCellValue(cell.Value);
                 //else EditCellValue(0);
                 editCanvas.Visibility = Visibility.Hidden;
@@ -195,7 +196,8 @@ namespace DesktopApp.View
             }
             else
             {
-                field.Text = Convert.ToString(cell.Value);
+                string text = cell.Value == 0 ? "" : cell.Value.ToString();
+                field.Text = Convert.ToString(text);
                 editCanvas.Visibility = Visibility.Hidden;
                 Refresh();
             }

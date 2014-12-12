@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using DesktopApp.Structure;
 
 namespace DesktopApp
 {
@@ -30,13 +31,17 @@ namespace DesktopApp
         MapController mapCtrl;
         SolverController solver;
         StaticsController stats;
+        LoggedInUser user;
         public enum GameState { Ended, InGame, Fault }
         int statePointerTop;
 
-        public MainWindow()
+        public MainWindow(LoggedInUser lu)
         {
             InitializeComponent();
             GenerateNewMap(0);
+
+            user = lu;
+            SetUpUserDetails();
 
             TheEnd.Visibility = Visibility.Hidden;
             statePointerTop = 349;
@@ -60,10 +65,16 @@ namespace DesktopApp
             tableCtrl.ShowCandidates = false;
         }
 
+        private void SetUpUserDetails()
+        {
+            lblUsername.Content = user.Username == "" ? user.Email : user.Username;
+        }
+
         private void Window_Exit(object sender, MouseButtonEventArgs e)
         {
             Application.Current.Shutdown();
         }
+
         private void Window_Minimal(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;

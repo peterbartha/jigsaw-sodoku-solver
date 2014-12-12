@@ -37,7 +37,7 @@
             </Canvas.Effect>
             <Canvas x:Name="titleBar" Height="40" Width="657" Background="#FF8DA1A2" Canvas.Left="301">
                 <Image Height="20" Canvas.Left="10" Canvas.Top="11" Width="20" Source="pack://application:,,,/Resources/user_icon.png"/>
-                <Label Content="Peter Bartha" Canvas.Left="31" Canvas.Top="5" Width="115" FontSize="16" Foreground="#FF253D47"/>
+                <Label x:Name="lblUsername" Content="Peter Bartha" Canvas.Left="31" Canvas.Top="5" Width="249" FontSize="16" Foreground="#FF253D47"/>
                 <Image x:Name="exitIcon" Height="12" Canvas.Left="632" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/quit.png" Cursor="Hand"/>
                 <Image x:Name="minimalIcon" Height="12" Canvas.Left="611" Canvas.Top="15" Width="12" Source="pack://siteoforigin:,,,/Resources/minimal.png" Cursor="Hand"/>
             </Canvas>
