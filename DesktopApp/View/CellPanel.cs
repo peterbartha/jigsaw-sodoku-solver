@@ -209,7 +209,7 @@ namespace DesktopApp.View
             if (value >= 0 && value <= 9)
             {
                 cell.Value = value;
-                number.Text = Convert.ToString(cell.Value);
+                number.Text = value > 0 ? Convert.ToString(cell.Value) : "";
                 tableController.MakeCandidatesForTableCells();
 
                 if (tableController.CountEmptyCells() == 0) tableController.CheckGameState();

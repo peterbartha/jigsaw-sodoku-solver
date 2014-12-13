@@ -228,6 +228,7 @@ namespace DesktopApp
             }
 
             if (showMessageAfter) ShowSuccessPanel();
+
             return GameState.Ended;
         }
 
