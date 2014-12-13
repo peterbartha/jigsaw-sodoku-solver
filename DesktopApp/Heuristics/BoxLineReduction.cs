@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace DesktopApp.Heuristics
 
             for (int i = 0; i < 9; i++)
             {
-                InnerShellBoxLineReduction(Utility.GetColumnByIndex(i, table.Cells).ToList());
-                InnerShellBoxLineReduction(Utility.GetRowByIndex(i, table.Cells).ToList());
+                InnerShellBoxLineReduction(TableSearch.GetColumnByIndex(i, table.Cells).ToList());
+                InnerShellBoxLineReduction(TableSearch.GetRowByIndex(i, table.Cells).ToList());
             }
 
             return isChanged;

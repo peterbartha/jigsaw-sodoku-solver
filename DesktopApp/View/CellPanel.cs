@@ -18,6 +18,7 @@ namespace DesktopApp.View
         private Canvas candidateCanvas, resultCanvas, editCanvas;
         private TextBox field;
         private TextBlock number;
+        private Border resultBorder;
         private List<TextBlock> candidates;
         private Cell cell;
         public readonly IList<string> backgrounds = new List<string> { "#b3d7e9", "#f4dda7", "#e4bdd4", "#b3e6dd", "#f5c0a6", "#eeeeee", "#e9adad", "#c8c8c8", "#e3efb9" }.AsReadOnly();
@@ -94,11 +95,11 @@ namespace DesktopApp.View
             resultCanvas.Width = resultCanvas.Height = 60;
             resultCanvas.Margin = new Thickness(-60, 0, 0, 0);
 
-            Border border = new Border();
-            border.Width = border.Height = 60;
+            resultBorder = new Border();
+            resultBorder.Width = resultBorder.Height = 60;
             BrushConverter bc = new BrushConverter();
-            border.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
-            border.BorderThickness = new Thickness(1, 1, 1, 1);
+            resultBorder.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
+            resultBorder.BorderThickness = new Thickness(1, 1, 1, 1);
 
             number = new TextBlock();
             number.Text = cell.Value > 0 && cell.Value < 10 ? Convert.ToString(cell.Value) : "";
@@ -108,9 +109,9 @@ namespace DesktopApp.View
             number.HorizontalAlignment = HorizontalAlignment.Center;
             number.VerticalAlignment = VerticalAlignment.Center;
             number.Padding = cell.IsDefault ? new Thickness(0) : new Thickness(0, 2, 0, 0);
-            
-            border.Child = number;
-            resultCanvas.Children.Add(border);
+
+            resultBorder.Child = number;
+            resultCanvas.Children.Add(resultBorder);
             resultCanvas.Visibility = Visibility.Hidden;
             this.Children.Add(resultCanvas);
         }
@@ -212,6 +213,7 @@ namespace DesktopApp.View
                 tableController.MakeCandidatesForTableCells();
 
                 if (tableController.CountEmptyCells() == 0) tableController.CheckGameState();
+                CheckValue();
             }
         }
 
@@ -229,6 +231,25 @@ namespace DesktopApp.View
                 candidates[candidate - 1].Visibility = Visibility.Visible;
             }
             //if (candidates.Count == 0) number.Text = Convert.ToString(cell.Value);
+        }
+
+        public void CheckValue()
+        {  
+            var bc = new BrushConverter();
+
+            if (!CheckCellValidity() && tableController.ShowBadValues)
+            {
+                resultBorder.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                resultBorder.BorderBrush = (Brush)bc.ConvertFrom("#91aa9d");
+            }
+        }
+
+        private Boolean CheckCellValidity()
+        {
+            return (cell.Value == tableController.SolvedTable.Cells.ElementAt(cell.Y).ElementAt(cell.X).Value || cell.Value == 0);
         }
 
         private void HideAllCandidates()

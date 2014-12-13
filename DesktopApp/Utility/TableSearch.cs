@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopApp.Heuristics
+namespace DesktopApp.Utility
 {
-    static class Utility
+    public static class TableSearch
     {
         public static IEnumerable<Cell> GetRowOfCell(Cell cell, List<List<Cell>> cells)
         {

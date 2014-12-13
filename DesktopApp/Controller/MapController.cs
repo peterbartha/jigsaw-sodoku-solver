@@ -15,14 +15,16 @@ namespace DesktopApp.Controller
         private MainWindow mainWindow;
         private StaticsController statCtrl;
         private TableController tableController;
+        private SolverController solverCtrl;
         private List<Problem> maps;
         private Problem map;
         private MySqlDB db;
 
 
-        public MapController(TableController tableCtrl, MainWindow mw, StaticsController sctrl)
+        public MapController(TableController tableCtrl, StaticsController sctrl, SolverController solver, MainWindow mw)
         {
             mainWindow = mw;
+            solverCtrl = solver;
             statCtrl = sctrl;
             tableController = tableCtrl;
 
@@ -128,6 +130,7 @@ namespace DesktopApp.Controller
             tableController.Table.Cells = ParseMap(problem.Map);
             tableController.Table.Boxes = ParseBox(problem.Box);
             tableController.RenderTable();
+            tableController.SolveTableBeforeGame(solverCtrl);
             mainWindow.SetActualMapName(problem.Name);
             statCtrl.CreateNewStat();
             mainWindow.TheEnd.Visibility = Visibility.Hidden;

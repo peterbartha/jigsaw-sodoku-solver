@@ -8,7 +8,7 @@ using DesktopApp.Structure;
 
 namespace DesktopApp.Controller
 {
-    class SolverController
+    public class SolverController
     {
         private List<Heuristic> heuristics;
         private int actualId;
@@ -39,7 +39,7 @@ namespace DesktopApp.Controller
         {
             if (heuristics.ElementAt(Actual).Apply())
             {
-                if (window.CheckGameState() != MainWindow.GameState.InGame) return;
+                if (window.CheckGameState(true) != MainWindow.GameState.InGame) return;
                 Actual = 0;
                 return;
             }
@@ -63,9 +63,23 @@ namespace DesktopApp.Controller
                 Actual = heuristics.IndexOf(heuristic);
                 if (heuristic.Apply())
                 {
-                    if (window.CheckGameState() != MainWindow.GameState.InGame) return;
+                    if (window.CheckGameState(true) != MainWindow.GameState.InGame) return;
                     Actual = 0;
                     AutoSolve();
+                    break;
+                }
+            }
+        }
+
+        public void GetSolvedMap()
+        {
+            foreach (var heuristic in heuristics)
+            {
+                Actual = heuristics.IndexOf(heuristic);
+                if (heuristic.Apply())
+                {
+                    if (window.CheckGameState(false) != MainWindow.GameState.InGame) return;
+                    GetSolvedMap();
                     break;
                 }
             }

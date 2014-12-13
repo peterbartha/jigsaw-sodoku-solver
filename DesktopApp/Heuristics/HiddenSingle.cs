@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace DesktopApp.Heuristics
 
             for (int num = 0; num < 9; num++)
             {
-                InnerHiddenSingle(Utility.GetColumnByIndex(num, table.Cells).ToList());
-                InnerHiddenSingle(Utility.GetRowByIndex(num, table.Cells).ToList());
+                InnerHiddenSingle(TableSearch.GetColumnByIndex(num, table.Cells).ToList());
+                InnerHiddenSingle(TableSearch.GetRowByIndex(num, table.Cells).ToList());
             }
 
             foreach (var box in table.Boxes)

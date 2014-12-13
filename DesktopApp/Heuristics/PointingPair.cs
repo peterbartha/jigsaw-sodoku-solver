@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,9 +58,9 @@ namespace DesktopApp.Heuristics
                 for (int i = 0; i < 9; i++)
                 {
                     if (matchBoolColumn[i])
-                        InnerPointingPair(Utility.GetRowByIndex(candPlaceColumn[i], table.Cells).ToList(), i + 1, box);
+                        InnerPointingPair(TableSearch.GetRowByIndex(candPlaceColumn[i], table.Cells).ToList(), i + 1, box);
                     if (matchBoolRow[i])
-                        InnerPointingPair(Utility.GetColumnByIndex(candPlaceRow[i], table.Cells).ToList(), i + 1, box);
+                        InnerPointingPair(TableSearch.GetColumnByIndex(candPlaceRow[i], table.Cells).ToList(), i + 1, box);
                 }
             }
 

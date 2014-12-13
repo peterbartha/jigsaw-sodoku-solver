@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,8 @@ namespace DesktopApp.Heuristics
                             for (int j = i+1; j < 10; j++)
                                 if (cell.Candidates.Contains(i) && cell.Candidates.Contains(j))
                                 {
-                                    InnerHiddenPair(Utility.GetColumnByIndex(cell.Y, table.Cells).ToList(), i, j);
-                                    InnerHiddenPair(Utility.GetRowByIndex(cell.X, table.Cells).ToList(), i, j);
+                                    InnerHiddenPair(TableSearch.GetColumnByIndex(cell.Y, table.Cells).ToList(), i, j);
+                                    InnerHiddenPair(TableSearch.GetRowByIndex(cell.X, table.Cells).ToList(), i, j);
                                     InnerHiddenPair(cell.Box.Cells, i, j);
                                 }
             return isChanged;

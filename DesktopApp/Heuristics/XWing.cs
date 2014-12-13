@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace DesktopApp.Heuristics
             for (int row = 0; row < 9; row++)
             {   
                 // [x,0] cand >>>>>VALUE<<<<<, [x,1] first column num [x,2] second column num
-                only2Rows.Add(InnerOnly2XWing(Utility.GetRowByIndex(row, table.Cells).ToList()));
+                only2Rows.Add(InnerOnly2XWing(TableSearch.GetRowByIndex(row, table.Cells).ToList()));
             }
             // cand_Data: [x.0] cand count, [x.1] first column, [x.2] second column, [x.3] first cand's row number, [x.4] second cand's row number
             int[,] candData = new int[9, 5];
@@ -66,8 +67,8 @@ namespace DesktopApp.Heuristics
             {   // cand_Data: [x.0] cand count, [x.1] first column, [x.2] second column, [x.3] first cand's row number, [x.4] second cand's row number
                 if (candGood.Contains(i + 1))
                 {
-                    InnerCoreXWing(Utility.GetColumnByIndex(candData[i, 1], table.Cells).ToList(), i + 1, candData[i, 3], candData[i, 4]);
-                    InnerCoreXWing(Utility.GetColumnByIndex(candData[i, 2], table.Cells).ToList(), i + 1, candData[i, 3], candData[i, 4]);
+                    InnerCoreXWing(TableSearch.GetColumnByIndex(candData[i, 1], table.Cells).ToList(), i + 1, candData[i, 3], candData[i, 4]);
+                    InnerCoreXWing(TableSearch.GetColumnByIndex(candData[i, 2], table.Cells).ToList(), i + 1, candData[i, 3], candData[i, 4]);
                 }
             }
 

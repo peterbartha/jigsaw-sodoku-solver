@@ -119,7 +119,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Heuristics\Utility.cs" />
+    <Compile Include="Utility\TableSearch.cs" />
+    <Compile Include="Utility\ObjectCopier.cs" />
     <Compile Include="View\CellPanel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

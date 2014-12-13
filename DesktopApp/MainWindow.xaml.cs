@@ -44,7 +44,7 @@ namespace DesktopApp
             SetUpUserDetails();
 
             TheEnd.Visibility = Visibility.Hidden;
-            statePointerTop = 349;
+            statePointerTop = 314;
             Canvas.SetTop(StepPointer, statePointerTop);
             
             logoPanel.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseDown);
@@ -66,10 +66,11 @@ namespace DesktopApp
         {
             stats = new StaticsController(this);
             tableCtrl = new TableController(this, stats);
-            mapCtrl = new MapController(tableCtrl, this, stats);
             solver = new SolverController(tableCtrl.Table, this);
+            mapCtrl = new MapController(tableCtrl, stats, solver, this);
 
             tableCtrl.ShowCandidates = false;
+            tableCtrl.PreSetBadValues(false);
         }
 
         private void SetUpUserDetails()
@@ -193,7 +194,7 @@ namespace DesktopApp
             }
         }
 
-        public GameState CheckGameState()
+        public GameState CheckGameState(Boolean showMessageAfter)
         {
             int empty = 0;
             int fault = 0;
@@ -215,18 +216,18 @@ namespace DesktopApp
 
             if (fault > 0)
             {
-                ShowErrorPanel();
+                if (showMessageAfter) ShowErrorPanel();
                 return GameState.Fault;
             }
             else if (empty > 0) return GameState.InGame;
 
             if (!tableCtrl.CheckTable())
             {
-                ShowErrorPanel();
+                if (showMessageAfter) ShowErrorPanel();
                 return GameState.Fault;
             }
 
-            ShowSuccessPanel();
+            if (showMessageAfter) ShowSuccessPanel();
             return GameState.Ended;
         }
 
@@ -262,6 +263,15 @@ namespace DesktopApp
         {
             var mapWindow = new OpenMap(mapCtrl);
             mapWindow.Show();
+        }
+
+        private void ChkShowBadValues_Click(object sender, RoutedEventArgs e)
+        {
+            if (tableCtrl != null && stats != null)
+            {
+                tableCtrl.ShowBadValues = (Boolean)ChkShowBadValues.IsChecked;
+                stats.ShowedBadValues = (Boolean)ChkShowBadValues.IsChecked ? (Boolean)ChkShowBadValues.IsChecked : stats.ShowedBadValues;
+            }
         }
 
     }

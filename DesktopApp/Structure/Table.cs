@@ -17,6 +17,12 @@ namespace DesktopApp.Structure
             boxes = new List<Box>();
         }
 
+        public Table(Table t)
+        {
+            cells = t.cells;
+            boxes = t.boxes;
+        }
+
         /**
          * Setter / Getter methods
          */

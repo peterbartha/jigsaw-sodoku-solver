@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using DesktopApp.View;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DesktopApp.Heuristics
 {
-    abstract class Heuristic
+    public abstract class Heuristic
     {
         protected Table table;
         protected CellPanel cellpanels;
@@ -34,8 +35,8 @@ namespace DesktopApp.Heuristics
          */
         protected void BasicStep(Cell cell)
         {
-            InnerBasicStep(Utility.GetColumnByIndex(cell.X, table.Cells).ToList(), cell.Value);
-            InnerBasicStep(Utility.GetRowByIndex(cell.Y, table.Cells).ToList(), cell.Value);
+            InnerBasicStep(TableSearch.GetColumnByIndex(cell.X, table.Cells).ToList(), cell.Value);
+            InnerBasicStep(TableSearch.GetRowByIndex(cell.Y, table.Cells).ToList(), cell.Value);
             InnerBasicStep(cell.Box.Cells, cell.Value);
         }
 

@@ -1,5 +1,6 @@
 ﻿using DesktopApp.Heuristics;
 using DesktopApp.Structure;
+using DesktopApp.Utility;
 using DesktopApp.View;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,10 @@ namespace DesktopApp.Controller
     {
         private MainWindow window;
         private Table table;
+        private Table solvedTable;
         private List<List<CellPanel>> cellPanels;
         private Boolean showCandidates;
+        private Boolean showBadValues;
         private StaticsController stats;
 
         public TableController(MainWindow mainWindow, StaticsController statsCont)
@@ -69,9 +72,45 @@ namespace DesktopApp.Controller
             }
         }
 
+        public void SolveTableBeforeGame(SolverController solver)
+        {
+            MakeCandidatesForTableCells();
+
+            do {
+                ClearAllExceptDefaults();
+                solver.GetSolvedMap();
+            } while (!CheckTable());
+
+            solvedTable = new Table();
+            foreach (var row in Table.Cells)
+            {
+                var sr = new List<Cell>();
+                foreach (var cell in row)
+                {
+                    var sc = new Cell();
+                    sc.Value = cell.Value;
+                    sr.Add(sc);
+                    if (!cell.IsDefault) cell.Value = 0;
+                }
+                solvedTable.Cells.Add(sr);
+            }
+            RenderTable();
+        }
+
         private void ClearCellPanels()
         {
             cellPanels.Clear();
+        }
+
+        private void ClearAllExceptDefaults()
+        {
+            foreach (var row in Table.Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (!cell.IsDefault) cell.Value = 0;
+                }
+            }
         }
 
         private void ClearTable()
@@ -106,7 +145,7 @@ namespace DesktopApp.Controller
 
         public void CheckGameState()
         {
-            window.CheckGameState();
+            window.CheckGameState(true);
         }
 
        
@@ -135,7 +174,7 @@ namespace DesktopApp.Controller
             int count = 0;
 
             // Row
-            foreach (var c in Utility.GetRowOfCell(cell, table.Cells))
+            foreach (var c in TableSearch.GetRowOfCell(cell, table.Cells))
             {
                 if (c.Value == cell.Value) count++;
                 if (count > 1) return false;
@@ -143,7 +182,7 @@ namespace DesktopApp.Controller
 
             // Column
             count = 0;
-            foreach (var c in Utility.GetColumnOfCell(cell, table.Cells))
+            foreach (var c in TableSearch.GetColumnOfCell(cell, table.Cells))
             {
                 if (c.Value == cell.Value) count++;
                 if (count > 1) return false;
@@ -197,6 +236,11 @@ namespace DesktopApp.Controller
             set { table = value; }
         }
 
+        public Table SolvedTable
+        {
+            get { return solvedTable; }
+        }
+
         public Boolean ShowCandidates
         {
             get { return showCandidates; }
@@ -207,6 +251,27 @@ namespace DesktopApp.Controller
                     foreach (var cellPanel in row)
                     {
                         cellPanel.RefreshView();
+                    }
+                }
+            }
+        }
+
+        public void PreSetBadValues(Boolean b)
+        {
+            showBadValues = b;
+        }
+
+        public Boolean ShowBadValues
+        {
+            get { return showBadValues; }
+            set
+            {
+                showBadValues = value;
+                foreach (var row in cellPanels)
+                {
+                    foreach (var cellPanel in row)
+                    {
+                        cellPanel.CheckValue();
                     }
                 }
             }

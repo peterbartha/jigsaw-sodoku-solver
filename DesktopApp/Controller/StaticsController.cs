@@ -19,6 +19,7 @@ namespace DesktopApp.Controller
         private long elapsedMilis;
         private Boolean cheating;
         private Boolean showedCandidates;
+        private Boolean showedBadValues;
         private Boolean timerEnabled;
         private int points;
         private MySqlDB db;
@@ -29,7 +30,7 @@ namespace DesktopApp.Controller
         public StaticsController(MainWindow mw)
         {
             mainWindow = mw;
-            cheating = showedCandidates = false;
+            cheating = showedCandidates = showedBadValues = false;
             timerEnabled = true;
             steps = 0;
             elapsedMilis = 0;
@@ -195,6 +196,12 @@ namespace DesktopApp.Controller
         {
             get { return showedCandidates; }
             set { showedCandidates = value; }
+        }
+
+        public Boolean ShowedBadValues
+        {
+            get { return showedBadValues; }
+            set { showedBadValues = value; }
         }
 
         public Boolean TimerEnabled

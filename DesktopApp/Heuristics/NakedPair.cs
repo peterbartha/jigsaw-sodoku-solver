@@ -1,4 +1,5 @@
 ﻿using DesktopApp.Structure;
+using DesktopApp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace DesktopApp.Heuristics
 
             for (int i = 0; i < 9; i++)
             {
-                HeuristicInnerNakedPair(Utility.GetColumnByIndex(i, table.Cells).ToList());
-                HeuristicInnerNakedPair(Utility.GetRowByIndex(i, table.Cells).ToList());
+                HeuristicInnerNakedPair(TableSearch.GetColumnByIndex(i, table.Cells).ToList());
+                HeuristicInnerNakedPair(TableSearch.GetRowByIndex(i, table.Cells).ToList());
             }
             foreach (var box in table.Boxes)
             {
